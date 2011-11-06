@@ -30,14 +30,14 @@
 (defn input-files [input-dir]
   "Read input file and do some basic sanity checking."
   ; Apparently, the only truly reliable way to check that a text file
-	; is indeed an XML file is to parse it.  The XML declaration is
-	; optional, and different legal unicode encodings may or may not
-	; have a byte order mark.  The .xml extension is everywhere used
-	; in the specification, but nowhere mandated.
-	;
-	; So we check that the file is, in fact, a file, and demand an .xml
-	; extension.  Notification of more insidious file errors will have
-	; to be left to Saxon.
+  ; is indeed an XML file is to parse it.  The XML declaration is
+  ; optional, and different legal unicode encodings may or may not
+  ; have a byte order mark.  The .xml extension is everywhere used
+  ; in the specification, but nowhere mandated.
+  ;
+  ; So we check that the file is, in fact, a file, and demand an .xml
+  ; extension.  Notification of more insidious file errors will have
+  ; to be left to Saxon.
 	(let [filters [#(.isFile %)
 								 #(has-xml-extension? %)]]
     (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
