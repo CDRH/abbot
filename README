@@ -61,7 +61,7 @@ lein uberjar
 
 to generate the current SNAPSHOT.
 
-The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), abbot will will proceed to apply it to all the documents in the input directory.
+The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), abbot will proceed to apply it to all the documents in the input directory.
 
 So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT_HOME/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
 
