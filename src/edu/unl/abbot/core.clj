@@ -26,12 +26,6 @@
   (gen-class))
     
 
-(gen-class
-  :name edu.unl.abbot.Abbot
-  :state state
-  :init init)
-
-
 (require '[clojure.tools.cli :as c])
 
 (defn input-files [input-dir]
@@ -63,6 +57,3 @@
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
     (convert-files opts)))
-
-(defn -init []
-  [[]])
