@@ -24,7 +24,8 @@
   (import
     (java.io File))
   (gen-class))
-    
+
+
 
 (require '[clojure.tools.cli :as c])
 
@@ -57,3 +58,6 @@
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
     (convert-files opts)))
+
+(defn -convert-files []
+  (convert-files {"intputdir" (str abbot-home "/input") "outputdir" (str abbot-home "/output")}))
