@@ -22,10 +22,13 @@
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
   (import
-    (java.io File))
-  (gen-class))
+    (java.io File)))
 
-
+(gen-class
+  :name edu.unl.abbot.Abbot
+  :init init
+  :state state
+  :methods)
 
 (require '[clojure.tools.cli :as c])
 
@@ -59,5 +62,12 @@
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
     (convert-files opts)))
 
-(defn -convert-files []
-  (convert-files {"intputdir" (str abbot-home "/input") "outputdir" (str abbot-home "/output")}))
+
+(defn -init []
+  [[]])
+
+(defn -convert [instance]
+  (let [args {:inputdir (str abbot-home "/input")
+              :outputdir (str abbot-home "/output")
+              :single false}]
+    (convert-files args)))
