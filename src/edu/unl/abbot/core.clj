@@ -28,7 +28,9 @@
   :name edu.unl.abbot.Abbot
   :init init
   :state state
-  :methods)
+  :methods [
+		[convert [] void]
+		])
 
 (require '[clojure.tools.cli :as c])
 
@@ -64,10 +66,10 @@
 
 
 (defn -init []
-  [[]])
+	[[] (atom [])])
 
-(defn -convert [instance]
+(defn -convert [this]
   (let [args {:inputdir (str abbot-home "/input")
-              :outputdir (str abbot-home "/output")
+              :outputdir (str abbot-home "/output/")
               :single false}]
     (convert-files args)))
