@@ -31,8 +31,8 @@
 
 (def conversion-stylesheet
 	"Create the conversion stylesheet"
-  (let [rng-file (xml/compile-xml (slurp (str abbot-home "/target/tei-xl.rng")))
-        meta-file (slurp (str abbot-home "/xslt/metaStylesheetForRNGschemas.xsl"))
+  (let [rng-file (xml/compile-xml (slurp "target/tei-xl.rng"))
+        meta-file (slurp "xslt/metaStylesheetForRNGschemas.xsl")
         meta-stylesheet (xml/compile-xslt meta-file)]
     (xml/compile-xslt (meta-stylesheet rng-file))))
 
