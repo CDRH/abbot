@@ -254,7 +254,7 @@
 
          <!-- ########### begin implementation of the config file ########### -->
          <xsl:for-each
-            select="document('config/abbot_config.xml')/*//transformation[@activate='yes']">
+            select="document('/home/sramsay/projects/abbot/config/abbot_config.xml')/*//transformation[@activate='yes']">
 
             <xsl:comment>
                <xsl:text>Begin </xsl:text>
