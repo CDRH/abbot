@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Wed Oct 26 20:10:36 CDT 2011
+;;; Last Modified: Sun Jan 01 09:14:10 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -22,9 +22,15 @@
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
   (import
-    (java.io File))
-  (gen-class))
-    
+    (java.io File)))
+
+(gen-class
+  :name edu.unl.abbot.Abbot
+  :init init
+  :state state
+  :methods [
+		[convert [String String] void]
+		])
 
 (require '[clojure.tools.cli :as c])
 
@@ -57,3 +63,13 @@
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
     (convert-files opts)))
+
+
+(defn -init []
+	[[] (atom [])])
+
+(defn -convert [this input output]
+  (let [args {:inputdir input
+              :outputdir output
+              :single false}]
+    (convert-files args)))

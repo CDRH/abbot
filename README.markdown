@@ -26,13 +26,13 @@ Quickstart
 
 Everything you need to use Abbot (aside from an up-to-date JVM) is contained in the file abbot-X.X.X-SNAPSHOT-standalone.jar.
 
-1. Set the environment variable ABBOT_HOME to this directory (the root directory of the Abbot distribution).
+1. Set the environment variable ABBOT\_HOME to this directory (the root directory of the Abbot distribution).
 
-2. Put the files you want to convert into $ABBOT_HOME/input.
+2. Put the files you want to convert into $ABBOT\_HOME/input.
 
 3. type "java -jar abbot-X.X.X-SNAPSHOT-standalone.jar"
 
-4. Behold your converted files in $ABBOT_HOME/output
+4. Behold your converted files in $ABBOT\_HOME/output
 
 [Note: Passing -h after the jar will show you some command-line switches that allow you to change the input and output directories.]
 
@@ -45,7 +45,7 @@ Abbot reads a schema (we'll call it the "target schema") and automatically gener
 
 This works well for a surprising number of cases in which interoperability is the goal, but obviously won't work in more complicated cases.  When the mapping from some element in the documents to some element described in the schema is less obvious, you'll need to provide Abbot with a description of how that transformation should be undertaken.
 
-The key files, then, are the target schema (which is kept in $ABBOT_HOME/target) and the abbot_config.xml file (which is kept in $ABBOT_HOME/config).  The config file simply contains XSLT templates (under the <custom-transformations> element).  Each one of these will be added at runtime to the stylesheet that is automatically generated from the target schema.
+The key files, then, are the target schema (which is kept in $ABBOT\_HOME/target) and the abbot\_config.xml file (which is kept in $ABBOT\_HOME/config).  The config file simply contains XSLT templates (under the <custom-transformations> element).  Each one of these will be added at runtime to the stylesheet that is automatically generated from the target schema.
 
 [Note: Once again, replacing this config file with a simplified language is one of the major development goals of Abbot.  In the meantime, you have to provide your own XSLT templates.  Whether this is still worth it in your particular case really depends on how much customization is required, though it may be that having Abbot take care of the trivial cases for you helps you quite a bit.]
 
@@ -63,4 +63,4 @@ to generate the current SNAPSHOT.
 
 The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), Abbot will proceed to apply it to all the documents in the input directory.
 
-So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT_HOME/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
+So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT\_HOME/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
