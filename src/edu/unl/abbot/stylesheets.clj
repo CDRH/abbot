@@ -30,7 +30,6 @@
 ;; at runtime (by the meta-stylesheet itself).
 
 (def conversion-stylesheet
-	"Create the conversion stylesheet"
   (let [rng-file (xml/compile-xml (slurp "target/tei-xl.rng"))
         meta-file (slurp "xslt/metaStylesheetForRNGschemas.xsl")
         meta-stylesheet (xml/compile-xslt meta-file)]
