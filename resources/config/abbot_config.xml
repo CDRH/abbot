@@ -18,6 +18,7 @@
             <transformation type="xslt" activate="yes">
                <desc>convert temphead to teiHeader</desc>
                <xsl:template match="*[lower-case(name())='temphead']" priority="1">
+                  <!-- convert temphead to teiHeader -->
                   <teiHeader>
                      <fileDesc>
                         <titleStmt>
