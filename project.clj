@@ -1,4 +1,4 @@
-(defproject edu.unl/abbot "0.2.1"
+(defproject edu.unl/abbot "0.3.1"
   :description "Abbot: A Conversion Tool for Text Interoperability"
   :dependencies [[org.clojure/clojure "1.2.1"]
 								 [org.clojure/clojure-contrib "1.2.0"]
