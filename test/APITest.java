@@ -7,7 +7,7 @@ public class APITest {
 
     Abbot abbot = new Abbot();
 
-    abbot.convert();
+    abbot.convert("/home/sramsay/projects/abbot/input", "/home/sramsay/projects/abbot/output/");
 
   }
 

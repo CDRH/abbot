@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Jan 01 09:14:10 CST 2012
+;;; Last Modified: Thu Jan 12 12:59:59 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -24,8 +24,6 @@
   (import
     (java.io File)) 
 		(:gen-class))
-
-(require '[clojure.tools.cli :as c])
 
 (defn input-files [input-dir]
   "Read input file and do some basic sanity checking."
@@ -48,11 +46,3 @@
 	  (if (:single arg-map)
 		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))
 		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))))) 
-
-(defn -main [& args]
-  "Process command-line switches and call main conversion function"
-  (let [opts (c/cli args
-    (c/optional ["-s" "--single" "Run in single-threaded mode" :default false]) 
-    (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
-    (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
-    (convert-files opts)))

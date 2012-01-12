@@ -5,5 +5,5 @@
                  [org.clojure/tools.cli "0.1.0"]
                  [clojure-saxon "0.9.2"]]
 	:keep-non-project-classes true
-	:main edu.unl.abbot.core)
-	;:aot [edu.unl.abbot.Abbot])
+	:main edu.unl.abbot.cli
+	:aot [edu.unl.abbot.Abbot])
