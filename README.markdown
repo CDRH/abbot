@@ -24,13 +24,13 @@ Quickstart
 
 (We'll assume that you have one or more collections that do not conform to TEI-A and you would like to make them interoperate with one another by making them conform to that schema.)
 
-Everything you need to use Abbot (aside from an up-to-date JVM) is contained in the file abbot-X.X.X-SNAPSHOT-standalone.jar.
+Everything you need to use Abbot (aside from an up-to-date JVM) is contained in the file abbot-X.X.X-standalone.jar.
 
 1. Set the environment variable ABBOT\_HOME to this directory (the root directory of the Abbot distribution).
 
 2. Put the files you want to convert into $ABBOT\_HOME/input.
 
-3. type "java -jar abbot-X.X.X-SNAPSHOT-standalone.jar"
+3. type "java -jar abbot-X.X.X-standalone.jar"
 
 4. Behold your converted files in $ABBOT\_HOME/output
 
