@@ -1,8 +1,9 @@
 
 ;;; stylesheets.clj 
 ;;;
-;;; This file is part of Abbot.  It loads the metastylesheet, XML Schema,
-;;; and abbot_config.xml files, and generates the conversion stylesheet.
+;;; This file is part of Abbot.  It loads the metastylesheet,
+;;; XML Schema, and abbot_config.xml files, and generates the
+;;; conversion stylesheet.
 ;;;
 ;;; Written and Maintained by Brian Pytlik-Zillig and Stephen Ramsay
 ;;; for the Center for Digital Research in the Humanities, University
@@ -30,8 +31,9 @@
 ;; at runtime (by the meta-stylesheet itself).
 
 (def conversion-stylesheet
-  (let [rng-file (xml/compile-xml (slurp "target/tei-xl.rng"))
-        meta-file (slurp "xslt/metaStylesheetForRNGschemas.xsl")
+  ;(let [rng-file (xml/compile-xml (slurp "target/tei-xl.rng"))
+  (let [rng-file (xml/compile-xml (clojure.java.io/resource "target/tei-xl.rng"))
+        meta-file (clojure.java.io/resource "xslt/metaStylesheetForRNGschemas.xsl")
         meta-stylesheet (xml/compile-xslt meta-file)]
     (xml/compile-xslt (meta-stylesheet rng-file))))
 
