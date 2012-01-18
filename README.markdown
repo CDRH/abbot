@@ -2,6 +2,8 @@
 Abbot
 =====
 
+Version 0.3.1.
+
 A sepulchral voice reverberating through the monastery, says . . .
 
 *This is pre-release software.*  It may fail to compile.  It might have undocumented features.  It certainly has unimplemented features.  It definitely has bugs.  You have been warned.  See CHANGES for details on how things are going.
