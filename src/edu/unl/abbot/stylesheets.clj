@@ -30,13 +30,13 @@
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
-(def conversion-stylesheet
-  ;(let [rng-file (xml/compile-xml (slurp "target/tei-xl.rng"))
-  (let [rng-file (xml/compile-xml (clojure.java.io/resource "target/tei-xl.rng"))
+(defn stylesheet [schema]
+  (let [rng-file (xml/compile-xml (clojure.java.io/resource schema))
         meta-file (clojure.java.io/resource "xslt/metaStylesheetForRNGschemas.xsl")
         meta-stylesheet (xml/compile-xslt meta-file)]
     (xml/compile-xslt (meta-stylesheet rng-file))))
 
-(defn convert [xml-file]
+(defn convert [xml-file arg-map]
   (let [xmlfile (xml/compile-xml xml-file)]
+       [conversion-stylesheet (stylesheet (:schema arg-map))]
     (conversion-stylesheet xmlfile)))
