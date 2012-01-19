@@ -46,5 +46,5 @@
 	      schema (:schema arg-map)
 				conversion-stylesheet (stylesheet schema)]
 	  (if (:single arg-map)
-		  (doall (map #(spit (str output-dir (.getName conversion-stylesheet %)) (convert conversion-stylesheet %)) (input-files (:inputdir arg-map))))
-		  (doall (pmap #(spit (str output-dir (.getName %)) (convert % schema)) (input-files (:inputdir arg-map))))))) 
+		  (doall (map #(spit (str output-dir (.getName %)) (convert conversion-stylesheet %)) (input-files (:inputdir arg-map))))
+		  (doall (pmap #(spit (str output-dir (.getName %)) (convert conversion-stylesheet %)) (input-files (:inputdir arg-map)))))))

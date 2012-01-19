@@ -34,7 +34,6 @@
   (let [rng-file (xml/compile-xml (slurp schema))
         meta-file (slurp "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl")
         meta-stylesheet (xml/compile-xslt meta-file)]
-				(spit rng-file)
     (xml/compile-xslt (meta-stylesheet rng-file))))
 
 (defn convert [conversion-stylesheet xml-file]
