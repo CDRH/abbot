@@ -12,11 +12,7 @@
     stylesheet that coverts arbitrary XML files into a format that conforms to the 
     RelaxNG input schema. 
     
-    Copyright © 2007-20011 The Board of Trustees of the University of Illinois, The 
-    Board of Regents of the University of Nebraska at Lincoln, The University of 
-    Georgia Research Foundation, Inc., University of Maryland College Park, McMaster 
-    University, University of Alberta and The National Center for Supercomputing 
-    Applications.  
+    Copyright © 2007-20012 The Board of  Regents of the University of Nebraska.  
     
     All rights reserved. Please see LICENSE for details.
   ##########  -->
@@ -35,104 +31,113 @@
 
    <xsl:variable name="rightOfVariable">}</xsl:variable>
 
-   <xsl:variable name="logging">on</xsl:variable>
+   <xsl:variable name="logging">off</xsl:variable>
 
    <xsl:variable name="logEntry">
-      <xsl:element name="xsl:comment">
-         <xsl:copy-of select="$nodePath"/>
-         <xsl:element name="xsl:comment">
-            <wxsl:value-of select="$templateID"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="$desc"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="name()"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="$thisNodeAfterTransformation/*[name()!='emptyNode']/name()"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:copy-of
-               select="d:levenshteintest(string(name()),string($thisNodeAfterTransformation/*[name()!='emptyNode']/name()))"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="count(descendant::*)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="if (boolean($thisNodeAfterTransformation)=false) then 0 else count($thisNodeAfterTransformation//*[name()!='emptyNode'])-1"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="number(if (boolean($thisNodeAfterTransformation)=false) then 0 else count($thisNodeAfterTransformation//*[name()!='emptyNode'])-1) - count(descendant::*)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="distinct-values(descendant::*/name())"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="distinct-values($thisNodeAfterTransformation/child::*[name()!='emptyNode']/descendant::*/name())"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="$listOfAttributes"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="distinct-values($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*/name())"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="count(@*/name())"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="count($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="number(count(@*/name())) - number(count($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*))"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:variable name="allCurrentTextNodesInputFile">
-               <wxsl:for-each select="current()/text()">
-                  <wxsl:value-of select="."/>
-               </wxsl:for-each>
-            </wxsl:variable>
-            <wxsl:value-of select="string-length($allCurrentTextNodesInputFile)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:variable name="allCurrentTextNodesOutputFile">
-               <wxsl:for-each
-                  select="$thisNodeAfterTransformation/child::*[name()!='emptyNode']/current()/text()">
-                  <wxsl:value-of select="."/>
-               </wxsl:for-each>
-            </wxsl:variable>
-            <wxsl:value-of select="string-length($allCurrentTextNodesOutputFile)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of
-               select="string-length($allCurrentTextNodesInputFile) - string-length($allCurrentTextNodesOutputFile)"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:choose>
-               <wxsl:when test="$allCurrentTextNodesInputFile = $allCurrentTextNodesOutputFile"/>
-               <wxsl:otherwise>
+      <xsl:choose>
+         <xsl:when test="lower-case($logging) = 'on'">
+            <xsl:element name="xsl:comment">
+               <xsl:copy-of select="$nodePath"/>
+               <xsl:element name="xsl:comment">
+                  <wxsl:value-of select="$templateID"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="$desc"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="name()"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="$thisNodeAfterTransformation/*[name()!='emptyNode']/name()"/>
+                  <wxsl:text> : </wxsl:text>
                   <wxsl:copy-of
-                     select="d:levenshteintest(string($allCurrentTextNodesInputFile),string($allCurrentTextNodesOutputFile))"
-                  />
-               </wxsl:otherwise>
-            </wxsl:choose>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:value-of select="current-dateTime()"/>
-            <wxsl:text> : </wxsl:text>
-            <wxsl:for-each select="ancestor-or-self::*">
-               <wxsl:variable name="nodeName">
-                  <wxsl:value-of select="name()"/>
-               </wxsl:variable>
-               <wxsl:value-of select="name()"/>
+                     select="d:levenshteintest(string(name()),string($thisNodeAfterTransformation/*[name()!='emptyNode']/name()))"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="count(descendant::*)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="if (boolean($thisNodeAfterTransformation)=false) then 0 else count($thisNodeAfterTransformation//*[name()!='emptyNode'])-1"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="number(if (boolean($thisNodeAfterTransformation)=false) then 0 else count($thisNodeAfterTransformation//*[name()!='emptyNode'])-1) - count(descendant::*)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="distinct-values(descendant::*/name())"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="distinct-values($thisNodeAfterTransformation/child::*[name()!='emptyNode']/descendant::*/name())"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="$listOfAttributes"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="distinct-values($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*/name())"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="count(@*/name())"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="count($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="number(count(@*/name())) - number(count($thisNodeAfterTransformation/child::*[name()!='emptyNode']/@*))"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:variable name="allCurrentTextNodesInputFile">
+                     <wxsl:for-each select="current()/text()">
+                        <wxsl:value-of select="."/>
+                     </wxsl:for-each>
+                  </wxsl:variable>
+                  <wxsl:value-of select="string-length($allCurrentTextNodesInputFile)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:variable name="allCurrentTextNodesOutputFile">
+                     <wxsl:for-each
+                        select="$thisNodeAfterTransformation/child::*[name()!='emptyNode']/current()/text()">
+                        <wxsl:value-of select="."/>
+                     </wxsl:for-each>
+                  </wxsl:variable>
+                  <wxsl:value-of select="string-length($allCurrentTextNodesOutputFile)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of
+                     select="string-length($allCurrentTextNodesInputFile) - string-length($allCurrentTextNodesOutputFile)"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:choose>
+                     <wxsl:when
+                        test="$allCurrentTextNodesInputFile = $allCurrentTextNodesOutputFile"/>
+                     <wxsl:otherwise>
+                        <wxsl:copy-of
+                           select="d:levenshteintest(string($allCurrentTextNodesInputFile),string($allCurrentTextNodesOutputFile))"
+                        />
+                     </wxsl:otherwise>
+                  </wxsl:choose>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:value-of select="current-dateTime()"/>
+                  <wxsl:text> : </wxsl:text>
+                  <wxsl:for-each select="ancestor-or-self::*">
+                     <wxsl:variable name="nodeName">
+                        <wxsl:value-of select="name()"/>
+                     </wxsl:variable>
+                     <wxsl:value-of select="name()"/>
 
-               <wxsl:for-each select="@*">
-                  <wxsl:text>{@</wxsl:text>
-                  <wxsl:value-of select="name()"/>
-                  <wxsl:text>=</wxsl:text>
-                  <wxsl:value-of select="."/>
-                  <wxsl:text>}</wxsl:text>
-               </wxsl:for-each>
+                     <wxsl:for-each select="@*">
+                        <wxsl:text>{@</wxsl:text>
+                        <wxsl:value-of select="name()"/>
+                        <wxsl:text>=</wxsl:text>
+                        <wxsl:value-of select="."/>
+                        <wxsl:text>}</wxsl:text>
+                     </wxsl:for-each>
 
-               <wxsl:if test="following-sibling::*[name()=$nodeName]">
-                  <wxsl:text>[</wxsl:text>
-                  <wxsl:value-of select="count(preceding-sibling::*[name()=$nodeName]) + 1"/>
-                  <wxsl:text>]</wxsl:text>
-               </wxsl:if>
-               <wxsl:text>/</wxsl:text>
-            </wxsl:for-each>
+                     <wxsl:if test="following-sibling::*[name()=$nodeName]">
+                        <wxsl:text>[</wxsl:text>
+                        <wxsl:value-of select="count(preceding-sibling::*[name()=$nodeName]) + 1"/>
+                        <wxsl:text>]</wxsl:text>
+                     </wxsl:if>
+                     <wxsl:text>/</wxsl:text>
+                  </wxsl:for-each>
 
-            <wxsl:text> : </wxsl:text>
+                  <wxsl:text> : </wxsl:text>
 
-         </xsl:element>
-      </xsl:element>
+               </xsl:element>
+            </xsl:element>
+         </xsl:when>
+         <xsl:otherwise><!-- otherwise add no log entry --></xsl:otherwise>
+      </xsl:choose>
+
+
+
    </xsl:variable>
 
    <xsl:variable name="nodePath">
@@ -249,12 +254,11 @@
             </wxsl:choose>
          </wxsl:function>
 
-         <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of
-               select="system-property('xsl:vendor')"/></xsl:comment>
+         <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of select="system-property('xsl:vendor')"/></xsl:comment>
 
          <!-- ########### begin implementation of the config file ########### -->
          <xsl:for-each
-            select="document('config/abbot_config.xml')/*//transformation[@activate='yes']">
+            select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
 
             <xsl:comment>
                <xsl:text>Begin </xsl:text>

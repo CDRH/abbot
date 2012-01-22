@@ -31,6 +31,8 @@
 (defn -main [& args]
   "Process command-line switches and call main conversion function"
   (let [opts (c/cli args
+    (c/optional ["-c" "--config" "Abbot config" :default "http://abbot.unl.edu/abbot_config.xml"])
+    (c/optional ["-t" "--schema" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"])
     (c/optional ["-s" "--single" "Run in single-threaded mode" :default false]) 
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]

@@ -45,4 +45,4 @@
   (let [output-dir (:outputdir arg-map)]
 	  (if (:single arg-map)
 		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))
-		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))))) 
+		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map)))))))
