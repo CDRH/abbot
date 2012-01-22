@@ -42,10 +42,7 @@
 
 (defn convert-files [arg-map]
   "Apply the conversion stylesheet to the input files"
-  (let [output-dir (:outputdir arg-map)
-	      schema (:schema arg-map)
-				config (:config arg-map)
-				conversion-stylesheet (stylesheet schema config)]
+  (let [output-dir (:outputdir arg-map)]
 	  (if (:single arg-map)
-		  (doall (map #(spit (str output-dir (.getName %)) (convert conversion-stylesheet %)) (input-files (:inputdir arg-map))))
-		  (doall (pmap #(spit (str output-dir (.getName %)) (convert conversion-stylesheet %)) (input-files (:inputdir arg-map)))))))
+		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))
+		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map)))))))

@@ -21,11 +21,7 @@
 
 (ns edu.unl.abbot.stylesheets
   (:use edu.unl.abbot.utils)
-	(:require [saxon :as sax])
-	(:require [clojure.xml :as xml])
-	(:require [clojure.zip :as zip])
-	(:require [clojure.contrib.zip-filter.xml :as zf])
-	(:require [clojure.contrib.prxml :as px]))
+	(:require [saxon :as sax]))
 
 ;; Creates the "conversion stylesheet" (the stylesheet that does the
 ;; actual conversion) from the "meta-stylesheet"
@@ -33,14 +29,15 @@
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
-(defn stylesheet [schema config]
-  (let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-				rng-file (sax/compile-xml (slurp schema))
-				config-file (xml/parse config)
-        meta-file (xml/parse meta-url)]
-		(px/prxml meta-file)
-		(sax/compile-xslt (sax/compile-xslt (px/prxml (with-out-str meta-file))) rng-file)))
+; (def foo (assoc-in stable [:content] (concat (get-in stable [:content]) (get-in add [:content]))))
 
-(defn convert [conversion-stylesheet xml-file]
+(def conversion-stylesheet
+	(let [schema-url "http://abbot.unl.edu/tei-xl.rng"
+				rng-file (sax/compile-xml (java.net.URL. schema-url))
+				meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+				meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
+		(sax/compile-xslt (meta-stylesheet rng-file))))
+
+(defn convert [xml-file]
   (let [xmlfile (sax/compile-xml xml-file)]
     (conversion-stylesheet xmlfile)))

@@ -257,8 +257,8 @@
          <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of select="system-property('xsl:vendor')"/></xsl:comment>
 
          <!-- ########### begin implementation of the config file ########### -->
-         <!--<xsl:for-each
-            select="document('config/abbot_config.xml')/*//transformation[@activate='yes']">
+         <xsl:for-each
+            select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
 
             <xsl:comment>
                <xsl:text>Begin </xsl:text>
@@ -288,43 +288,43 @@
                   />
                </xsl:attribute>
 
-               <!-\- begin writing the param that gives an ID# to the template for identification in the log -\->
+               <!-- begin writing the param that gives an ID# to the template for identification in the log -->
                <xsl:element name="xsl:param">
                   <xsl:attribute name="name">
                      <xsl:text>templateID</xsl:text>
                   </xsl:attribute>
                   <xsl:value-of select="generate-id()"/>
                </xsl:element>
-               <!-\- end writing the param that gives an ID# to the template for identification in the log -\->
+               <!-- end writing the param that gives an ID# to the template for identification in the log -->
 
-               <!-\- begin writing the param that describes the template for use in the log -\->
+               <!-- begin writing the param that describes the template for use in the log -->
                <xsl:element name="xsl:param">
                   <xsl:attribute name="name">desc</xsl:attribute>
                   <xsl:value-of select="child::desc"/>
                </xsl:element>
-               <!-\- end writing the param that describes the template for use in the log -\->
+               <!-- end writing the param that describes the template for use in the log -->
 
-               <!-\- begin writing the param that IDs the element's ATTRIBUTES for use in the log -\->
+               <!-- begin writing the param that IDs the element's ATTRIBUTES for use in the log -->
                <xsl:element name="xsl:param">
                   <xsl:attribute name="name">listOfAttributes</xsl:attribute>
                   <wxsl:value-of select="distinct-values(@*/name())"/>
                </xsl:element>
-               <!-\- end writing the param that IDs the template for use in the log -\->
+               <!-- end writing the param that IDs the template for use in the log -->
 
-               <!-\- begin writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -\->
+               <!-- begin writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -->
                <wxsl:variable name="elementName">
                   <wxsl:value-of select="lower-case(name())"/>
                </wxsl:variable>
-               <!-\- end writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -\->
+               <!-- end writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -->
 
-               <!-\- $$$$$ Begin transformation described in abbot_config.xml $$$$$ -\->
+               <!-- $$$$$ Begin transformation described in abbot_config.xml $$$$$ -->
 
-               <!-\- begin writing the variable that describes this node after transformation -\->
+               <!-- begin writing the variable that describes this node after transformation -->
                <xsl:element name="xsl:variable">
                   <xsl:attribute name="name">thisNodeAfterTransformation</xsl:attribute>
 
                   <emptyNode delete="no"/>
-                  <!-\- 'emptyNode' ensures that this variable is not typed as a string -\->
+                  <!-- 'emptyNode' ensures that this variable is not typed as a string -->
 
                   <xsl:choose>
 
@@ -335,7 +335,7 @@
 
                      <xsl:when
                         test="child::element/@choice='change' and descendant::attribute/@choice='delete'">
-                        <!-\- for changing an element by DELETING its attribute(s) -\->
+                        <!-- for changing an element by DELETING its attribute(s) -->
                         <wxsl:element
                            name="{concat($leftOfVariable,'elementName',$rightOfVariable)}">
                            <wxsl:apply-templates/>
@@ -346,7 +346,7 @@
               and descendant::attribute/@choice='change' 
               and descendant::content/@use[starts-with(.,'@')] 
               and descendant::content/@choice='text'">
-                        <!-\- for deleting an element and replacing it with the value of that element's attribute -\->
+                        <!-- for deleting an element and replacing it with the value of that element's attribute -->
                         <xsl:element name="xsl:value-of">
                            <xsl:attribute name="select">
                               <xsl:value-of select="descendant::content/@use"/>
@@ -355,7 +355,7 @@
                      </xsl:when>
                      <xsl:when
                         test="child::element/@choice='change' and descendant::attribute/@choice='add'">
-                        <!-\- for changing an element by ADDING an attribute or attributes -\->
+                        <!-- for changing an element by ADDING an attribute or attributes -->
                         <wxsl:element
                            name="{concat($leftOfVariable,'elementName',$rightOfVariable)}">
                            <wxsl:attribute name="{descendant::attribute/@n}">
@@ -371,9 +371,9 @@
                   </xsl:choose>
                </xsl:element>
 
-               <!-\- @@@@ Begin custom log entry. @@@@ -\->
+               <!-- @@@@ Begin custom log entry. @@@@ -->
                <xsl:copy-of select="$logEntry"/>
-               <!-\- @@@@ End custom log entry. @@@@ -\->
+               <!-- @@@@ End custom log entry. @@@@ -->
 
                <wxsl:if
                   test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::emptyNode)">
@@ -381,7 +381,7 @@
                   />
                </wxsl:if>
 
-               <!-\- $$$$$ End transformation described in abbot_config.xml $$$$$ -\->
+               <!-- $$$$$ End transformation described in abbot_config.xml $$$$$ -->
 
             </xsl:element>
 
@@ -390,7 +390,7 @@
                <xsl:value-of select="child::desc"/>
             </xsl:comment>
 
-         </xsl:for-each>-->
+         </xsl:for-each>
 
          <!-- ########### end implementation of the config file ########### -->
 

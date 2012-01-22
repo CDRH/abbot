@@ -36,4 +36,4 @@
     (c/optional ["-s" "--single" "Run in single-threaded mode" :default false]) 
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
     (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
-    (time (convert-files opts))))
+    (convert-files opts)))
