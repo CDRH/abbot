@@ -31,12 +31,12 @@
 
 ; (def foo (assoc-in stable [:content] (concat (get-in stable [:content]) (get-in add [:content]))))
 
-(def conversion-stylesheet
-	(let [schema-url "http://abbot.unl.edu/tei-xl.rng"
-				rng-file (sax/compile-xml (java.net.URL. schema-url))
-				meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-				meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
-		(sax/compile-xslt (meta-stylesheet rng-file))))
+(defn conversion-stylesheet [schema]
+  (let [rng-file (sax/compile-xml (java.net.URL. schema))
+        meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+        meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
+    (fn [x] (sax/compile-xslt (meta-stylesheet rng-file)) x)))
+
 
 (defn convert [xml-file]
   (let [xmlfile (sax/compile-xml xml-file)]

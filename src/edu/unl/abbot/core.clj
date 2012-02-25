@@ -40,9 +40,13 @@
 								 #(has-xml-extension? %)]]
     (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
 
-(defn convert-files [arg-map]
+(defn convert-files [{input-dir  :inputdir
+                      output-dir :outputdir
+                      schema     :schema
+                      single     :single}]
   "Apply the conversion stylesheet to the input files"
-  (let [output-dir (:outputdir arg-map)]
-	  (if (:single arg-map)
-		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map))))
-		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files (:inputdir arg-map)))))))
+  (do
+    (conversion-stylesheet schema))
+  (if (single)
+		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files input-dir)))
+		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files input-dir)))))
