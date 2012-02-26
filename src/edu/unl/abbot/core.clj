@@ -45,8 +45,7 @@
                       schema     :schema
                       single     :single}]
   "Apply the conversion stylesheet to the input files"
-  (do
-    (conversion-stylesheet schema))
-  (if (single)
-		  (doall (map #(spit (str output-dir (.getName %)) (convert %)) (input-files input-dir)))
-		  (doall (pmap #(spit (str output-dir (.getName %)) (convert %)) (input-files input-dir)))))
+	(let [stylesheet (conversion-stylesheet schema)]
+		(if single
+			(doall (map #(spit (str output-dir (.getName %)) (convert stylesheet %)) (input-files input-dir)))
+			(doall (pmap #(spit (str output-dir (.getName %)) (convert stylesheet %)) (input-files input-dir))))))
