@@ -2,7 +2,7 @@
 Abbot
 =====
 
-Version 0.3.4.
+Version 0.4.0.
 
 A sepulchral voice reverberating through the monastery, says . . .
 
