@@ -9,7 +9,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Jan 22 15:59:49 CST 2012
+;;; Last Modified: Sun Feb 26 15:43:04 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -20,24 +20,24 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.stylesheets
+	(import
+		(java.io File))
   (:use edu.unl.abbot.utils)
 	(:require [saxon :as sax]))
 
-;; Creates the "conversion stylesheet" (the stylesheet that does the
-;; actual conversion) from the "meta-stylesheet"
+;; Returns a closure for creating the conversion stylesheet (the stylesheet
+;; that does the actual conversion) from the meta-stylesheet.
 ;;
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
-; (def foo (assoc-in stable [:content] (concat (get-in stable [:content]) (get-in add [:content]))))
-
 (defn conversion-stylesheet [schema]
-  (let [rng-file (sax/compile-xml (java.net.URL. schema))
+  (let [rng-file (sax/compile-xml (urlify schema))
         meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
         meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
     (fn [x] (sax/compile-xslt (meta-stylesheet rng-file)) x)))
 
 
-(defn convert [xml-file]
+(defn convert [stylesheet xml-file]
   (let [xmlfile (sax/compile-xml xml-file)]
-    (conversion-stylesheet xmlfile)))
+    (stylesheet xmlfile)))
