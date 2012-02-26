@@ -7,7 +7,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Jan 12 12:59:54 CST 2012
+;;; Last Modified: Sun Feb 26 16:59:08 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -29,12 +29,21 @@
   	:state state
   	:methods [
 			[convert [String String] void]
+			[convert [String String String] void]
 			]))
 
 (defn -init []
 	[[] (atom [])])
 
-(defn -convert [this inputdir outputdir]
+(defn -convert
+	"Apply the conversion stylesheet to the input files."
+	([this inputdir outputdir]
+		(let [opts {:inputdir inputdir
+								:outputdir outputdir
+								:schema "http://abbot.unl.edu/tei-xl.rng"}]
+			(convert-files opts)))
+	([this inputdir outputdir schema]
 	(let [opts {:inputdir inputdir
-			  			:outputdir outputdir}]
-    (convert-files opts)))
+			  			:outputdir outputdir
+							:schema schema}] 
+			(convert-files opts))))
