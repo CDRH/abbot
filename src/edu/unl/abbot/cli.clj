@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Jan 01 09:14:10 CST 2012
+;;; Last Modified: Sun Feb 26 15:46:25 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -35,5 +35,10 @@
     (c/optional ["-t" "--schema" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"])
     (c/optional ["-s" "--single" "Run in single-threaded mode" :default false]) 
     (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
-    (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]))]
-    (convert-files opts)))
+    (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")])
+    (c/optional ["-V" "--version" "Show version number" :flag true]))]
+		(if (:version opts)
+			(do
+				(println (format "Version %s", version))
+				(System/exit 0))
+			(convert-files opts))))
