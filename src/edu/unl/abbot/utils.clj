@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Feb 26 15:39:24 CST 2012
+;;; Last Modified: Sun Feb 26 17:12:13 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -22,9 +22,9 @@
 	(import
 		(java.io File)))
 
-(def abbot-home (System/getenv "ABBOT_HOME"))
+(def version "0.4.0")
 
-(def version "0.3.4")
+(def abbot-home (System/getenv "ABBOT_HOME"))
 
 (defn has-xml-extension? [file] 
   "Simple substring check for the presence of a .xml extension on
