@@ -21,6 +21,7 @@
 (ns edu.unl.abbot.core
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
+	(:use clojure.java.io)
   (import
     (java.io File)) 
 		(:gen-class))

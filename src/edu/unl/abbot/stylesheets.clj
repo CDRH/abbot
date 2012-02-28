@@ -9,7 +9,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Feb 26 15:43:04 CST 2012
+;;; Last Modified: Tue Feb 28 13:59:22 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -34,8 +34,9 @@
 (defn conversion-stylesheet [schema]
   (let [rng-file (sax/compile-xml (urlify schema))
         meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-        meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
-    (fn [x] (sax/compile-xslt (meta-stylesheet rng-file)) x)))
+        meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))
+				conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
+    (fn [x] (conversion-xslt x))))
 
 
 (defn convert [stylesheet xml-file]
