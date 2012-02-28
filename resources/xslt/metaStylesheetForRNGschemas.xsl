@@ -135,9 +135,6 @@
          </xsl:when>
          <xsl:otherwise><!-- otherwise add no log entry --></xsl:otherwise>
       </xsl:choose>
-
-
-
    </xsl:variable>
 
    <xsl:variable name="nodePath">
@@ -260,10 +257,10 @@
          <xsl:for-each
             select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
 
-            <xsl:comment>
+            <!--<xsl:comment>
                <xsl:text>Begin </xsl:text>
                <xsl:value-of select="child::desc"/>
-            </xsl:comment>
+            </xsl:comment>-->
 
             <xsl:element name="xsl:template">
                <xsl:attribute name="match">
@@ -385,15 +382,16 @@
 
             </xsl:element>
 
-            <xsl:comment>
+            <!--<xsl:comment>
                <xsl:text>End </xsl:text>
                <xsl:value-of select="child::desc"/>
-            </xsl:comment>
+            </xsl:comment>-->
 
          </xsl:for-each>
 
          <!-- ########### end implementation of the config file ########### -->
 
+         <!--dfgdfgdgdfgdfgdgdgdfg   -->
          <xsl:apply-templates/>
 
          <wxsl:template name="forLoop">
@@ -420,6 +418,15 @@
 
       </wxsl:stylesheet>
    </xsl:template>
+
+   <!-- hide this: <define name="data.probability">
+      <data type="double">
+         <param name="minInclusive">0</param>
+         <param name="maxInclusive">1</param>
+      </data>
+   </define> -->
+
+   <xsl:template match="rng:define[not(child::rng:element)]"/>
 
    <xsl:template match="rng:define[child::rng:element]">
 
@@ -459,7 +466,7 @@
             <xsl:choose>
                <xsl:when test="$attributeName = $attributeNameLowercase">
                   <xsl:value-of select="@name"/>
-                  <xsl:text>|</xsl:text>
+                  <xsl:text> | </xsl:text>
                   <xsl:value-of select="upper-case(@name)"/>
                </xsl:when>
                <xsl:otherwise>

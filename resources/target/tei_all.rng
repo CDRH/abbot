@@ -7,12 +7,7 @@ Edition: 2.0.0 Last updated on 16th December 2011.
 Edition Location: http://www.tei-c.org/Vault/P5/2.0.0/
 
 -->
-   <!--This template file is freely available and you are
-             hereby authorised to copy, modify, and redistribute it in
-             any way without further reference or permissions.When making such modifications, you are strongly
-             recommended to change the present text to include an
-             accurate statement of the licencing conditions applicable
-             to your modified text.-->
+   <!---->
    <define name="macro.paraContent">
       <zeroOrMore>
          <choice>
