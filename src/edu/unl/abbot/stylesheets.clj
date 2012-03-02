@@ -25,13 +25,14 @@
   (:use edu.unl.abbot.utils)
 	(:require [saxon :as sax]))
 
-;; Returns a closure for creating the conversion stylesheet (the stylesheet
-;; that does the actual conversion) from the meta-stylesheet.
+;; Creates the conversion stylesheet (the XSLT that does the actual
+;; conversion) from the meta-stylesheet, and returns it as a function.
 ;;
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
 (defn conversion-stylesheet [schema]
+  "Returns the conversion stylesheet (as a function)"
   (let [rng-file (sax/compile-xml (urlify schema))
         meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
         meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))
