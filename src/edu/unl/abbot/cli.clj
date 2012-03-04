@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sun Feb 26 15:46:25 CST 2012
+;;; Last Modified: Sun Mar 04 16:35:18 CST 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -31,14 +31,18 @@
 (defn -main [& args]
   "Process command-line switches and call main conversion function"
   (let [opts (c/cli args
-    ;(c/optional ["-c" "--config" "Abbot config" :default "http://abbot.unl.edu/abbot_config.xml"])
-    (c/optional ["-t" "--schema" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"])
-    (c/optional ["-s" "--single" "Run in single-threaded mode" :default false]) 
-    (c/optional ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")])
-    (c/optional ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")])
-    (c/optional ["-V" "--version" "Show version number" :flag true]))]
-		(if (:version opts)
-			(do
+    ;["-c" "--config" "Abbot config" :default "http://abbot.unl.edu/abbot_config.xml"]
+    ["-t" "--schema" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"]
+    ["-s" "--single" "Run in single-threaded mode" :default false] 
+    ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")]
+    ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]
+    ["-h" "--help" "This usage message" :flag true]
+    ["-V" "--version" "Show version number" :flag true])
+		options (first opts)
+		banner  (last opts)]
+		(cond
+			(:version options) (do
 				(println (format "Version %s", version))
 				(System/exit 0))
-			(convert-files opts))))
+			(:help options) (do (println banner))
+			:else (convert-files options))))
