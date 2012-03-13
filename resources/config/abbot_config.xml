@@ -3,9 +3,10 @@
    xmlns:wxsl="http://www.w3.org/1999/XSL/Transform2" version="2.0" exclude-result-prefixes="#all"
    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:teix="http://www.tei-c.org/ns/Examples"
    xmlns:rng="http://relaxng.org/ns/structure/1.0"
-   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+   xmlns:tei="http://www.tei-c.org/ns/1.0">
 
-   <sitemap file="context://config/abbot_config.xml" date="2011-04-16">
+   <sitemap file="context://config/abbot_config.xml" date="2012-02-29">
 
       <transformations default="custom-transformation" loggingType="XPath">
 
@@ -15,35 +16,34 @@
 
          <custom-transformations>
 
-            <transformation type="xslt" activate="yes">
+            <!--<transformation type="xslt" activate="yes">
                <desc>convert temphead to teiHeader</desc>
                <xsl:template match="*[lower-case(name())='temphead']" priority="1">
-                  <!-- convert temphead to teiHeader -->
-                  <teiHeader>
-                     <fileDesc>
-                        <titleStmt>
-                           <title>Warning: title missing!</title>
+                  <teiHeader xmlns="http://www.tei-c.org/ns/1.0"> 
+                     <fileDesc xmlns="http://www.tei-c.org/ns/1.0">
+                        <titleStmt xmlns="http://www.tei-c.org/ns/1.0">
+                           <title xmlns="http://www.tei-c.org/ns/1.0">Warning: title
+                              missing!</title>
                         </titleStmt>
-                        <publicationStmt>
-                           <publisher/>
+                        <publicationStmt xmlns="http://www.tei-c.org/ns/1.0">
+                           <publisher xmlns="http://www.tei-c.org/ns/1.0"/>
                         </publicationStmt>
-                        <sourceDesc>
-                           <p/>
+                        <sourceDesc xmlns="http://www.tei-c.org/ns/1.0">
+                           <p xmlns="http://www.tei-c.org/ns/1.0"/>
                         </sourceDesc>
                      </fileDesc>
                      <xsl:apply-templates/>
                   </teiHeader>
                </xsl:template>
-            </transformation>
+            </transformation>-->
 
             <transformation type="xslt" activate="yes">
                <desc>edit the gap element</desc>
                <xsl:template match="*[lower-case(name())='gap']" priority="1">
-
                   <xsl:variable name="gap_firstPass">
                      <xsl:choose>
                         <xsl:when test="lower-case(@extent)='1span'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -52,11 +52,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@desc)='duplicate'"/>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -64,10 +64,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='replacement'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -75,10 +75,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -86,10 +86,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='symbol'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -97,10 +97,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="reason">symbol</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -108,10 +108,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -120,10 +120,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -131,10 +131,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='music'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -142,10 +142,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="reason">music</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='intruder'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -153,10 +153,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='lang=ara'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -165,10 +165,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='math'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -176,10 +176,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="reason">math</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -187,11 +187,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="reason">blank</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 or more pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -200,11 +200,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 + pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -213,11 +213,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages +' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -226,11 +226,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='a few words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -238,11 +238,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='half a line' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -250,11 +250,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='remainder of note' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -262,11 +262,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='several letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -274,11 +274,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -287,11 +287,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -300,11 +300,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -313,7 +313,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='duplicate'"/>
@@ -323,7 +323,7 @@
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='intruder'"/>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -332,13 +332,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -347,11 +347,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -360,11 +360,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -373,11 +373,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -386,7 +386,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 letters' and lower-case(@desc)='symbol'"/>
@@ -394,7 +394,7 @@
                            test="lower-case(@extent)='11 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='12 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -403,13 +403,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">12</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='13 letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -418,11 +418,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">13</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -431,7 +431,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">13</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 letters' and lower-case(@desc)='symbol'"/>
@@ -441,7 +441,7 @@
                            test="lower-case(@extent)='15 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='2 letter' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -450,11 +450,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -463,13 +463,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -478,11 +478,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -491,11 +491,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -504,7 +504,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='20 letters' and lower-case(@desc)='symbol'"/>
@@ -518,7 +518,7 @@
                            test="lower-case(@extent)='26 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -527,11 +527,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -540,11 +540,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -553,13 +553,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='3+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -568,11 +568,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -581,11 +581,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -594,13 +594,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='4+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -609,7 +609,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='45 letters' and lower-case(@desc)='symbol'"/>
@@ -619,7 +619,7 @@
                            test="lower-case(@extent)='5 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='5 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -628,11 +628,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -641,11 +641,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -654,13 +654,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='6+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -669,11 +669,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -682,7 +682,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">7</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 letters' and lower-case(@desc)='symbol'"/>
@@ -690,7 +690,7 @@
                            test="lower-case(@extent)='8 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='8 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -699,11 +699,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">8</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8+ letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -712,13 +712,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">8</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='9 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='9 letters' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -727,11 +727,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">letter</xsl:attribute>
                               <xsl:attribute name="extent">9</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -740,11 +740,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -754,11 +754,11 @@
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -767,11 +767,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -780,11 +780,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ lines' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -793,11 +793,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -806,11 +806,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -819,11 +819,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">11</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -832,11 +832,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">12</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -845,11 +845,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">13</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='14 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -858,11 +858,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">14</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -871,11 +871,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">15</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 lines' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -884,11 +884,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">15</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -897,11 +897,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">17</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 lines' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -910,11 +910,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">18</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -923,11 +923,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -936,11 +936,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -949,11 +949,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 lines' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -962,11 +962,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -975,11 +975,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -988,11 +988,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1001,11 +1001,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">7</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1014,11 +1014,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">8</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='9 lines' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1027,7 +1027,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">line</xsl:attribute>
                               <xsl:attribute name="extent">9</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 note' and lower-case(@desc)='illegible'"/>
@@ -1035,7 +1035,7 @@
                            test="lower-case(@extent)='1 number' and lower-case(@desc)='illegible'"/>
                         <xsl:when
                            test="lower-case(@extent)='0.5 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1044,11 +1044,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='intruder'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1057,13 +1057,13 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='replacement'"/>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1073,11 +1073,11 @@
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1086,11 +1086,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1099,11 +1099,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ page' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1112,11 +1112,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1125,11 +1125,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1138,10 +1138,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1+ pages'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1150,11 +1150,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1163,11 +1163,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1176,11 +1176,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1189,11 +1189,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">11</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1202,11 +1202,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">12</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1215,11 +1215,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">13</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='139 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1228,11 +1228,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">139</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='14 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1241,11 +1241,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">14</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='142+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1254,11 +1254,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">142</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1267,11 +1267,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">15</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='16 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1280,11 +1280,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">16</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1293,11 +1293,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">17</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 pages' and lower-case(@desc)='intruder'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1306,11 +1306,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">18</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1319,11 +1319,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">18</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='191 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1332,10 +1332,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">191</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2 pages'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1344,10 +1344,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2+ pages'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1356,11 +1356,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1370,11 +1370,11 @@
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 page' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1383,11 +1383,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1396,11 +1396,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1409,11 +1409,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='20 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1422,11 +1422,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">20</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='207 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1435,11 +1435,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">207</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='21+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1448,11 +1448,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">21</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1461,11 +1461,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 pages' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1475,11 +1475,11 @@
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='30 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1488,11 +1488,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">30</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='32 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1501,11 +1501,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">32</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='36 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1514,11 +1514,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">36</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 pages' and lower-case(@desc)='duplicate'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1527,11 +1527,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1540,11 +1540,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1553,11 +1553,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='400+ pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1566,11 +1566,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">400</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1579,11 +1579,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='50 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1592,11 +1592,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">50</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='53 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1605,11 +1605,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">53</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1618,11 +1618,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='62 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1631,11 +1631,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">62</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1644,11 +1644,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">7</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1657,11 +1657,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">8</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='88 pages' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1670,11 +1670,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">page</xsl:attribute>
                               <xsl:attribute name="extent">88</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1683,11 +1683,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">paragraph</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1696,11 +1696,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">paragraph</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1710,11 +1710,11 @@
                               <xsl:attribute name="unit">paragraph</xsl:attribute>
                               <xsl:attribute name="reason">blank</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ paragraphs' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1723,11 +1723,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">paragrah</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 paragraphs' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1736,11 +1736,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">paragraph</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1749,10 +1749,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1 span' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1762,11 +1762,11 @@
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="reason">blank</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1776,11 +1776,11 @@
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1789,11 +1789,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 sspan' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1802,11 +1802,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='several words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1815,11 +1815,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1829,11 +1829,11 @@
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1842,10 +1842,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1 word' and lower-case(@desc)='blank'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1855,11 +1855,11 @@
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="reason">blank</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1868,11 +1868,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ word' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1881,11 +1881,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1894,11 +1894,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1907,11 +1907,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">10</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1920,11 +1920,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">11</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1933,11 +1933,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">12</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1946,11 +1946,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">15</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='16 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1959,11 +1959,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">16</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1972,11 +1972,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">17</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='19 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1985,11 +1985,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">19</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1998,11 +1998,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 words' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2012,11 +2012,11 @@
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2025,11 +2025,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">2</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2038,11 +2038,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3+ words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2051,11 +2051,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">3</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2064,11 +2064,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">4</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2077,11 +2077,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 words' and lower-case(@desc)='foreign'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2091,11 +2091,11 @@
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="reason">foreign</xsl:attribute>
                               <xsl:attribute name="extent">5</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2104,11 +2104,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6+ words' and lower-case(@desc)='missing'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2117,11 +2117,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">6</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2130,11 +2130,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">7</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2143,11 +2143,11 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">8</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='9 words' and lower-case(@desc)='illegible'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2156,10 +2156,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">word</xsl:attribute>
                               <xsl:attribute name="extent">9</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2167,10 +2167,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2178,10 +2178,10 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='3'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2189,11 +2189,11 @@
                                  </xsl:attribute>
                               </xsl:for-each>
                               <xsl:attribute name="unit">unknown</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='note'"/>
                         <xsl:when test="lower-case(@extent)='para'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2202,10 +2202,10 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">paragraph</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='span'">
-                           <gap>
+                           <xsl:element name="gap">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2214,7 +2214,7 @@
                               </xsl:for-each>
                               <xsl:attribute name="unit">span</xsl:attribute>
                               <xsl:attribute name="extent">1</xsl:attribute>
-                           </gap>
+                           </xsl:element>
                         </xsl:when>
                         <xsl:otherwise>
                            <xsl:element name="gap">
@@ -2241,7 +2241,7 @@
                                        </xsl:attribute>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                       <xsl:copy-of select="."/>
+                                       <xsl:copy-of select="." copy-namespaces="no"/>
                                     </xsl:otherwise>
                                  </xsl:choose>
                               </xsl:for-each>
@@ -2260,7 +2260,7 @@
                            </xsl:if>
                         </xsl:when>
                         <xsl:otherwise>
-                           <xsl:copy-of select="."/>
+                           <xsl:copy-of select="." copy-namespaces="no"/>
                         </xsl:otherwise>
                      </xsl:choose>
                   </xsl:for-each>
@@ -2270,19 +2270,16 @@
 
             <transformation type="xslt" activate="yes">
                <desc>process the div element</desc>
-               <xsl:template match="*[starts-with(lower-case(name()),'div')]" priority="1">
-                  <div>
-                     <!--<xsl:copy-of select="@*"/>-->
-
+               <xsl:template match="*[not(@type)][starts-with(lower-case(name()),'div')]"
+                  priority="1">
+                  <xsl:element name="div">
                      <xsl:for-each select="./@*">
                         <xsl:attribute name="{lower-case(name())}">
                            <xsl:value-of select="."/>
                         </xsl:attribute>
-
                      </xsl:for-each>
-
                      <xsl:apply-templates/>
-                  </div>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
@@ -2293,8 +2290,7 @@
                      <xsl:attribute name="att">RNGSchema="../src/rng/tei-xl.rng"
                         type="xml"</xsl:attribute>
                   </xsl:processing-instruction>
-                  <xsl:element name="TEI">
-
+                  <TEI xmlns="http://www.tei-c.org/ns/1.0">
                      <xsl:choose>
                         <xsl:when test="@n or @id">
                            <xsl:attribute name="xml:id">
@@ -2303,9 +2299,8 @@
                         </xsl:when>
                         <xsl:otherwise/>
                      </xsl:choose>
-
                      <xsl:apply-templates/>
-                  </xsl:element>
+                  </TEI>
                </xsl:template>
             </transformation>
 
@@ -2322,15 +2317,16 @@
             <transformation type="xslt" activate="yes">
                <desc>substitute 'floatingText' element for 'letter' element</desc>
                <xsl:template match="*[lower-case(name())='letter']" priority="1">
-                  <floatingText type="letter">
-                     <body>
+                  <xsl:element name="floatingText">
+                     <xsl:attribute name="type">letter</xsl:attribute>
+                     <xsl:element name="body">
                         <xsl:apply-templates/>
-                     </body>
-                  </floatingText>
+                     </xsl:element>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
-            <transformation type="xslt" activate="yes">
+            <!--<transformation type="xslt" activate="yes">
                <xsl:template
                   match="*[(lower-case(name())='p' or lower-case(name())='q') and child::text/body/div1]"
                   priority="1">
@@ -2339,16 +2335,16 @@
                         <xsl:value-of select="@type"/>
                      </xsl:variable>
                      <xsl:element name="{$elementName}">
-                        <text>
+                        <xsl:element name="text">
                            <xsl:attribute name="useAttributeForFloatingText">
                               <xsl:value-of select="$divType"/>
                            </xsl:attribute>
                            <xsl:apply-templates/>
-                        </text>
+                        </xsl:element>
                      </xsl:element>
                   </xsl:for-each>
                </xsl:template>
-            </transformation>
+            </transformation>-->
 
             <transformation type="xslt" activate="yes">
                <desc>correct attributes on 'milestone'</desc>
@@ -2378,30 +2374,28 @@
                <xsl:template match="p" priority="1">
                   <xsl:choose>
                      <xsl:when test="ancestor::cell">
-                        <seg type="p">
+                        <xsl:element name="seg">
+                           <xsl:attribute name="type">p</xsl:attribute>
                            <xsl:apply-templates/>
-                        </seg>
+                        </xsl:element>
                      </xsl:when>
                      <xsl:when test="child::text">
                         <xsl:apply-templates/>
                      </xsl:when>
                      <xsl:otherwise>
-                        <p>
+                        <xsl:element name="p">
                            <xsl:for-each select="attribute::*">
                               <xsl:choose>
                                  <xsl:when test="name()='TEIform'"/>
                                  <xsl:otherwise>
-                                    <!--<xsl:copy-of select="."/>-->
-
                                     <xsl:attribute name="{lower-case(name())}">
                                        <xsl:value-of select="."/>
                                     </xsl:attribute>
-
                                  </xsl:otherwise>
                               </xsl:choose>
                            </xsl:for-each>
                            <xsl:apply-templates/>
-                        </p>
+                        </xsl:element>
                      </xsl:otherwise>
                   </xsl:choose>
                </xsl:template>
@@ -2410,47 +2404,47 @@
             <transformation type="xslt" activate="yes">
                <desc>replace 'sup' with hi@rend='sup'</desc>
                <xsl:template match="sup" priority="1">
-                  <hi>
+                  <xsl:element name="hi">
                      <xsl:attribute name="rend">sup</xsl:attribute>
                      <xsl:apply-templates/>
-                  </hi>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>replace tailnote with 'note' @type='tail'</desc>
                <xsl:template match="tailnote" priority="1">
-                  <note>
+                  <xsl:element name="note">
                      <xsl:choose>
                         <xsl:when test="lower-case(name())='tailnote'">
                            <xsl:attribute name="type">tail</xsl:attribute>
                         </xsl:when>
                      </xsl:choose>
                      <xsl:apply-templates/>
-                  </note>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>replace headnote with 'note' @type='head'</desc>
                <xsl:template match="headnote" priority="1">
-                  <note>
+                  <xsl:element name="note">
                      <xsl:choose>
                         <xsl:when test="lower-case(name())='headnote'">
                            <xsl:attribute name="type">head</xsl:attribute>
                         </xsl:when>
                      </xsl:choose>
                      <xsl:apply-templates/>
-                  </note>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>rename 'lg' who have children of 'stage' as 'sp'</desc>
                <xsl:template match="lg[not(@type='song')][child::stage]" priority="1">
-                  <sp>
+                  <xsl:element name="sp">
                      <xsl:apply-templates/>
-                  </sp>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
@@ -2505,7 +2499,7 @@
                               <!-- #### -->
                            </xsl:when>
                            <xsl:otherwise>
-                              <xsl:copy-of select="."/>
+                              <xsl:copy-of select="." copy-namespaces="no"/>
                            </xsl:otherwise>
                         </xsl:choose>
                      </xsl:for-each>
@@ -2518,20 +2512,20 @@
                <desc>replace head tags with label tags for children of headnotes and tailnotes in
                   ECCO</desc>
                <xsl:template match="head[parent::headnote | parent::tailnote]" priority="1">
-                  <label>
+                  <xsl:element name="label">
                      <xsl:apply-templates/>
-                  </label>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>add 'text' parent to 'group' elements that lack them</desc>
                <xsl:template match="group[not(parent::text)]" priority="1">
-                  <text>
-                     <group>
+                  <xsl:element name="text">
+                     <xsl:element name="group">
                         <xsl:apply-templates/>
-                     </group>
-                  </text>
+                     </xsl:element>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
@@ -2552,7 +2546,7 @@
                               </xsl:attribute>
                            </xsl:when>
                            <xsl:otherwise>
-                              <xsl:copy-of select="."/>
+                              <xsl:copy-of select="." copy-namespaces="no"/>
                            </xsl:otherwise>
                         </xsl:choose>
                      </xsl:for-each>
@@ -2602,7 +2596,7 @@
                      </xsl:when>
                      <xsl:otherwise>
                         <xsl:if test="child::lb">
-                           <lb/>
+                           <xsl:element name="lb"/>
                         </xsl:if>
                         <xsl:value-of select="@reg"/>
                      </xsl:otherwise>
@@ -2613,149 +2607,41 @@
             <transformation type="xslt" activate="yes">
                <desc>substitute 'quote' tag for 'q' tag</desc>
                <xsl:template match="q | Q" priority="1">
-                  <quote>
+                  <xsl:element name="quote">
                      <xsl:apply-templates/>
-                  </quote>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>retain 'abbr'</desc>
                <xsl:template match="abbr" priority="1">
-                  <abbr>
-                     <xsl:copy-of select="@*"/>
+                  <xsl:element name="abbr">
+                     <xsl:copy-of select="@*" copy-namespaces="no"/>
                      <xsl:apply-templates/>
-                  </abbr>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>add 'change' in revisionDesc</desc>
                <xsl:template match="teiHeader | teiheader" priority="1">
-                  <xsl:element name="teiHeader">
+                  <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
                      <xsl:for-each select="@*">
-                        <xsl:copy-of select="."/>
+                        <xsl:copy-of select="." copy-namespaces="no"/>
                      </xsl:for-each>
                      <xsl:apply-templates/>
-                     <revisionDesc>
-                        <change>
+                     <xsl:element name="revisionDesc">
+                        <xsl:element name="change">
                            <xsl:attribute name="when">
                               <xsl:value-of select="current-date()"/>
                            </xsl:attribute>
-                           <name xml:id="bpz">Pytlik Zillig, B.</name> Conversion to TEI by
-                           Abbot</change>
-                     </revisionDesc>
-                  </xsl:element>
+                           <xsl:element name="name">
+                              <xsl:attribute name="xml:id">bpz</xsl:attribute>Pytlik Zillig,
+                              B.</xsl:element> Conversion to TEI by Abbot</xsl:element>
+                     </xsl:element>
+                  </teiHeader>
                </xsl:template>
-            </transformation>
-
-            <transformation type="example" activate="no">
-               <desc>delete element</desc>
-               <ident XPath="text"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <attribute n="bar" gloss="add | change | delete" choice=""/>
-                  <content gloss="empty | mixedContent | element | text" choice="empty"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>add attribute</desc>
-               <ident XPath="language"/>
-               <element gloss="add | change | delete" choice="change">
-                  <attribute n="ident" gloss="add | change | delete" choice="add">
-                     <content gloss="text" choice="text"/>
-                  </attribute>
-                  <content gloss="empty | mixedContent | element | text" choice="text"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="example" activate="no">
-               <desc>delete element</desc>
-               <ident XPath="note"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <attribute n="bar" gloss="add | change | delete" choice=""/>
-                  <content gloss="empty | mixedContent | element | text" choice="empty"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete attribute</desc>
-               <ident XPath="title[@type='245' or @type='246']"/>
-               <element gloss="add | change | delete" choice="change">
-                  <attribute n="type" gloss="add | change | delete" choice="delete"/>
-                  <content gloss="empty | mixedContent | element | text" choice="text"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="no">
-               <desc>delete element</desc>
-               <ident XPath="publicationStmt"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <content gloss="empty | mixedContent | element | text" choice="mixedContent"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete element</desc>
-               <ident XPath="lb[parent::orig]"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <content gloss="empty | mixedContent | element | text" choice="mixedContent"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete element</desc>
-               <ident XPath="tagsDecl | refsDecl | classDecl | taxonomy | authority | funder"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <content gloss="empty | mixedContent | element | text" choice="mixedContent"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete duplicate encodingDesc tags</desc>
-               <ident XPath="encodingDesc[preceding::encodingDesc]"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <content gloss="empty | mixedContent | element | text" choice="mixedContent"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete element/use attribute</desc>
-               <ident XPath="sic"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <attribute n="corr" gloss="add | change | delete" choice="change"/>
-                  <content gloss="empty | mixedContent | element | text" use="@corr" choice="text"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="all" activate="yes">
-               <desc>delete element</desc>
-               <ident XPath="seriesStmt"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <attribute n="bar" gloss="add | change | delete" choice=""/>
-                  <content gloss="empty | mixedContent | element | text" choice="empty"/>
-                  <priority choice="1"/>
-               </element>
-            </transformation>
-
-            <transformation type="ECCO" activate="yes">
-               <desc>delete extra name[s]/resp[s] in respStmt</desc>
-               <ident
-                  XPath="name[parent::respStmt][preceding-sibling::name] | resp[parent::respStmt][preceding-sibling::resp]"/>
-               <element gloss="add | change | delete" choice="delete">
-                  <attribute gloss="add | change | delete" choice=""/>
-                  <content gloss="empty | mixedContent | element | text" choice="empty"/>
-                  <priority choice="1"/>
-               </element>
             </transformation>
 
             <transformation type="xslt" activate="yes">
@@ -2763,14 +2649,14 @@
                <xsl:template match="text" priority="1">
                   <xsl:choose>
                      <xsl:when test="ancestor::text and parent::q">
-                        <floatingText>
+                        <xsl:element name="floatingText">
                            <xsl:if test="descendant::body/*[starts-with(name(),'div')]/@type">
                               <xsl:attribute name="type">
                                  <xsl:choose>
                                     <xsl:when
-                                       test="matches(translate(descendant::body/*[starts-with(name(),'div')][1]/@type,&#34;'&#34;,''),'[_:A-Za-z]')">
+                                       test="matches(translate(descendant::body[1]/*[starts-with(name(),'div')][1]/@type,&#34;'&#34;,''),'[_:A-Za-z]')">
                                        <xsl:analyze-string
-                                          select="translate(descendant::body/*[starts-with(name(),'div')][1]/@type,&#34;'&#34;,'')"
+                                          select="translate(descendant::body[1]/*[starts-with(name(),'div')][1]/@type,&#34;'&#34;,'')"
                                           regex="[_:\-\.0-9a-zA-Z]+">
                                           <xsl:matching-substring>
                                              <xsl:value-of select="."/>
@@ -2803,17 +2689,17 @@
                                  <xsl:apply-templates/>
                               </xsl:when>
                               <xsl:otherwise>
-                                 <body>
+                                 <xsl:element name="body">
                                     <xsl:apply-templates/>
-                                 </body>
+                                 </xsl:element>
                               </xsl:otherwise>
                            </xsl:choose>
                            <!--end choose that decides whether to add a child 'body' element to
                      floatingText-->
-                        </floatingText>
+                        </xsl:element>
                      </xsl:when>
                      <xsl:when test="ancestor::text and not(ancestor::group)">
-                        <floatingText>
+                        <xsl:element name="floatingText">
                            <xsl:if test="@useAttributeForFloatingText">
                               <xsl:attribute name="type">
                                  <xsl:value-of
@@ -2827,17 +2713,17 @@
                                  <xsl:apply-templates/>
                               </xsl:when>
                               <xsl:otherwise>
-                                 <body>
+                                 <xsl:element name="body">
                                     <xsl:apply-templates/>
-                                 </body>
+                                 </xsl:element>
                               </xsl:otherwise>
                            </xsl:choose>
                            <!--end choose that decides whether to add a child 'body' element to
                      floatingText-->
-                        </floatingText>
+                        </xsl:element>
                      </xsl:when>
                      <xsl:otherwise>
-                        <text>
+                        <xsl:element name="text">
                            <xsl:choose>
                               <xsl:when test="@lang">
                                  <xsl:attribute name="xml:lang">
@@ -2846,7 +2732,7 @@
                               </xsl:when>
                            </xsl:choose>
                            <xsl:apply-templates/>
-                        </text>
+                        </xsl:element>
                      </xsl:otherwise>
                   </xsl:choose>
                </xsl:template>
