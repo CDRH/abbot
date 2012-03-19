@@ -1,2 +1,2 @@
 lein uberjar
-javac -cp /home/sramsay/projects/abbot/abbot-0.2.1-standalone.jar APITest.java
+javac -cp /Users/franksmutniak/Desktop/Github/CDRH/abbot/abbot-0.3.3-standalone.jar APITest.java
