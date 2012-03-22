@@ -37,7 +37,7 @@
       <xsl:choose>
          <xsl:when test="lower-case($logging) = 'on'">
             <xsl:element name="xsl:comment">
-               <xsl:copy-of select="$nodePath"/>
+               <xsl:copy-of select="$nodePath" copy-namespaces="no"/>
                <xsl:element name="xsl:comment">
                   <wxsl:value-of select="$templateID"/>
                   <wxsl:text> : </wxsl:text>
@@ -266,7 +266,7 @@
                <xsl:attribute name="match">
                   <xsl:choose>
                      <xsl:when test="@type='xslt' and @activate='yes'">
-                        <xsl:copy-of select="child::xsl:template/@match"/>
+                        <xsl:copy-of select="child::xsl:template/@match" copy-namespaces="no"/>
                      </xsl:when>
                      <xsl:when
                         test="lower-case(normalize-space(child::ident/@XPath)) != normalize-space(child::ident/@XPath)">
@@ -369,7 +369,7 @@
                </xsl:element>
 
                <!-- @@@@ Begin custom log entry. @@@@ -->
-               <xsl:copy-of select="$logEntry"/>
+               <xsl:copy-of select="$logEntry" copy-namespaces="no"/>
                <!-- @@@@ End custom log entry. @@@@ -->
 
                <wxsl:if
@@ -502,7 +502,10 @@
          <xsl:element name="xsl:variable">
             <xsl:attribute name="name">thisNodeAfterTransformation</xsl:attribute>
 
-            <xsl:element name="{$attributeName}">
+            <xsl:element name="{$attributeName}" namespace="http://www.tei-c.org/ns/1.0">
+
+               <xsl:namespace name="tei">http://www.tei-c.org/ns/1.0</xsl:namespace>
+
                <!-- begin writing attribute handler -->
                <wxsl:for-each select="./@*">
                   <wxsl:choose>
@@ -549,7 +552,7 @@
          <!-- end writing the variable that describes this node after transformation -->
 
          <!-- ++++ Begin DEFAULT log entry. ++++ -->
-         <xsl:copy-of select="$logEntry"/>
+         <xsl:copy-of select="$logEntry" copy-namespaces="no"/>
          <!-- ++++ End DEFAULT log entry. ++++ -->
 
          <wxsl:copy-of select="$thisNodeAfterTransformation"/>
