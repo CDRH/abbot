@@ -257,10 +257,10 @@
          <xsl:for-each
             select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
 
-            <!--<xsl:comment>
+            <xsl:comment>
                <xsl:text>Begin </xsl:text>
                <xsl:value-of select="child::desc"/>
-            </xsl:comment>-->
+            </xsl:comment>
 
             <xsl:element name="xsl:template">
                <xsl:attribute name="match">
@@ -375,17 +375,17 @@
                <wxsl:if
                   test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::emptyNode)">
                   <wxsl:copy-of select="$thisNodeAfterTransformation/child::*[name()!='emptyNode']"
-                  />
+                     copy-namespaces="no"/>
                </wxsl:if>
 
                <!-- $$$$$ End transformation described in abbot_config.xml $$$$$ -->
 
             </xsl:element>
 
-            <!--<xsl:comment>
+            <xsl:comment>
                <xsl:text>End </xsl:text>
                <xsl:value-of select="child::desc"/>
-            </xsl:comment>-->
+            </xsl:comment>
 
          </xsl:for-each>
 
@@ -503,8 +503,6 @@
             <xsl:attribute name="name">thisNodeAfterTransformation</xsl:attribute>
 
             <xsl:element name="{$attributeName}" namespace="http://www.tei-c.org/ns/1.0">
-
-               <xsl:namespace name="tei">http://www.tei-c.org/ns/1.0</xsl:namespace>
 
                <!-- begin writing attribute handler -->
                <wxsl:for-each select="./@*">
