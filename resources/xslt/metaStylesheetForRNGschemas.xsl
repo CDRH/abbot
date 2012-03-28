@@ -254,6 +254,9 @@
          <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of select="system-property('xsl:vendor')"/></xsl:comment>
 
          <!-- ########### begin implementation of the config file ########### -->
+         <!--<xsl:for-each
+            select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']"> -->
+
          <xsl:for-each
             select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
 
@@ -374,7 +377,8 @@
 
                <wxsl:if
                   test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::emptyNode)">
-                  <wxsl:copy-of select="$thisNodeAfterTransformation/child::*[name()!='emptyNode']"
+                  <wxsl:copy-of
+                     select="$thisNodeAfterTransformation/child::*[name()!='emptyNode'] | $thisNodeAfterTransformation/processing-instruction()"
                      copy-namespaces="no"/>
                </wxsl:if>
 

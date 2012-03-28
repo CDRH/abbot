@@ -6,7 +6,6 @@
    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
    xmlns:tei="http://www.tei-c.org/ns/1.0">
 
-
    <sitemap file="context://config/abbot_config.xml" date="2012-02-29">
 
       <transformations default="custom-transformation" loggingType="XPath">
@@ -16,6 +15,109 @@
          </default-transformations>
 
          <custom-transformations>
+
+            <transformation type="xslt" activate="yes">
+               <desc>adfghfghfgh</desc>
+               <xsl:template match="floatext" priority="1">
+                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:for-each select="./@*">
+                        <xsl:choose>
+                           <xsl:when test="name() ='lang'">
+                              <xsl:attribute name="xml:lang">
+                                 <xsl:value-of select="."/>
+                              </xsl:attribute>
+                           </xsl:when>
+                           <xsl:otherwise>
+                              <xsl:attribute name="{name()}">
+                                 <xsl:value-of select="."/>
+                              </xsl:attribute>
+                           </xsl:otherwise>
+                        </xsl:choose>
+                     </xsl:for-each>
+                     <xsl:apply-templates/>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>add 'div' around 'stage' where lacking</desc>
+               <xsl:template match="stage[preceding-sibling::*[1][name()='sp' or name()='stage']]"
+                  priority="1">
+                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:element name="stage" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:copy-of select="@*"/>
+                        <xsl:apply-templates/>
+                     </xsl:element>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>add 'div' element around 'sp' where lacking</desc>
+               <xsl:template match="sp[not(parent::div)]" priority="1">
+                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:element name="sp" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:copy-of select="@*"/>
+                        <xsl:apply-templates/>
+                     </xsl:element>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>add required @scheme attibute to 'keywords'</desc>
+               <xsl:template match="keywords[not(@scheme)]" priority="1">
+                  <xsl:element name="{name()}" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:copy-of select="@*"/>
+                     <xsl:attribute name="scheme">lcsh</xsl:attribute>
+                     <xsl:apply-templates/>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>removes redundant 'closer' around 'postscript'</desc>
+               <xsl:template match="closer[child::postscript]" priority="1">
+                  <xsl:apply-templates/>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>add missing @ident to 'language'</desc>
+               <xsl:template match="language[not(@ident)]" priority="1">
+                  <xsl:element name="language" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:copy-of select="@*"/>
+                     <xsl:attribute name="ident">
+                        <xsl:value-of select="."/>
+                     </xsl:attribute>
+                     <xsl:apply-templates/>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
+
+            <transformation type="xslt" activate="yes">
+               <desc>convert note @anchored to boolean true-false</desc>
+               <xsl:template match="note" priority="1">
+                  <xsl:element name="note" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:for-each select="./@*">
+                        <xsl:choose>
+                           <xsl:when test="name() ='anchored'">
+                              <xsl:attribute name="{name()}">
+                                 <xsl:value-of
+                                    select="if (lower-case(.) = 'yes') then 'true' else 'false'"/>
+                              </xsl:attribute>
+                           </xsl:when>
+                           <xsl:otherwise>
+                              <xsl:attribute name="{name()}">
+                                 <xsl:value-of select="."/>
+                              </xsl:attribute>
+                           </xsl:otherwise>
+                        </xsl:choose>
+                     </xsl:for-each>
+                     <xsl:apply-templates/>
+                  </xsl:element>
+               </xsl:template>
+            </transformation>
 
             <transformation type="xslt" activate="yes">
                <desc>edit the gap element</desc>
@@ -2266,9 +2368,8 @@
             <transformation type="xslt" activate="yes">
                <desc>process the root element</desc>
                <xsl:template match="*[not(parent::*)]" priority="1">
-                  <xsl:processing-instruction name="oxygen">
-                     <xsl:attribute name="att">RNGSchema="../src/rng/tei-xl.rng"
-                        type="xml"</xsl:attribute>
+                  <xsl:processing-instruction name="xml-model">
+                     <xsl:text>href="http://abbot.unl.edu/tei_all.rng"</xsl:text>
                   </xsl:processing-instruction>
                   <TEI xmlns="http://www.tei-c.org/ns/1.0">
                      <xsl:choose>
@@ -2294,8 +2395,6 @@
                <xsl:template match="*[lower-case(name())='idno']" priority="1"/>
             </transformation>
 
-
-
             <transformation type="xslt" activate="yes">
                <desc>substitute 'floatingText' element for 'letter' element</desc>
                <xsl:template match="*[lower-case(name())='letter']" priority="1">
@@ -2320,7 +2419,8 @@
                      <xsl:choose>
                         <xsl:when test="@unit">
                            <xsl:attribute name="unit">
-                              <xsl:value-of select="replace(@unit, '[-�,]', '_')"/>
+                              <xsl:value-of select="replace(replace(@unit, '[-�,]', '_'),' ','_')"
+                              />
                            </xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
@@ -2349,6 +2449,13 @@
                            <xsl:for-each select="attribute::*">
                               <xsl:choose>
                                  <xsl:when test="name()='TEIform'"/>
+
+                                 <xsl:when test="name()='id'">
+                                    <xsl:attribute name="xml:id">
+                                       <xsl:value-of select="."/>
+                                    </xsl:attribute>
+                                 </xsl:when>
+
                                  <xsl:otherwise>
                                     <xsl:attribute name="{lower-case(name())}">
                                        <xsl:value-of select="."/>
@@ -2402,20 +2509,15 @@
             </transformation>
 
             <transformation type="xslt" activate="yes">
-               <desc>rename 'lg' who have children of 'stage' as 'sp'</desc>
-               <xsl:template match="lg[not(@type='song')][child::stage]" priority="1">
-                  <xsl:element name="sp" namespace="http://www.tei-c.org/ns/1.0">
-                     <xsl:apply-templates/>
-                  </xsl:element>
-               </xsl:template>
-            </transformation>
-
-            <transformation type="xslt" activate="yes">
-               <desc>correct 'div' @type attributes containing illegal characters</desc>
-               <xsl:template match="*[@type][parent::*][starts-with(lower-case(name()),'div')]"
-                  priority="1">
+               <desc>correct @type attributes containing illegal characters</desc>
+               <xsl:template
+                  match="*[@type][parent::*][not(starts-with(lower-case(name()),'float'))]"
+                  priority="2">
                   <xsl:variable name="elementName">
                      <xsl:choose>
+                        <!--<xsl:when test="starts-with(lower-case(name()),'float')">
+                           <xsl:text>div</xsl:text>
+                        </xsl:when>-->
                         <xsl:when test="starts-with(lower-case(name()),'div')">
                            <xsl:text>div</xsl:text>
                         </xsl:when>
@@ -2459,6 +2561,12 @@
                               <!-- #### -->
                               <!-- End handling of @type attributes that are required to conform to the XML names specification. -->
                               <!-- #### -->
+                           </xsl:when>
+                           <xsl:when test="lower-case(name())='i2'"/>
+                           <xsl:when test="lower-case(name())='lang'">
+                              <xsl:attribute name="xml:lang">
+                                 <xsl:value-of select="."/>
+                              </xsl:attribute>
                            </xsl:when>
                            <xsl:otherwise>
                               <xsl:copy-of select="." copy-namespaces="no"/>
