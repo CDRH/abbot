@@ -56,7 +56,7 @@ So if you want to start playing with different target schemas and custom mapping
 Building from (and Tinkering with) the Source
 ---------------------------------------------
 
-Abbot is built using a combination of XSLT and Clojure using the Leiningen build tool.  So assuming you have both Clojure (we're using version 1.3) and the current copy of Leiningen, you should be able to type:
+Abbot is built using a combination of XSLT and Clojure using the Leiningen build tool.  So assuming you have both Clojure (we're using version 1.4) and the current copy of Leiningen, you should be able to type:
 
 lein deps
 lein uberjar
