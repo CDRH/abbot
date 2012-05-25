@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Jan 12 12:59:59 CST 2012
+;;; Last Modified: Fri May 25 15:18:41 CDT 2012
 ;;;
 ;;; Copyright © 2011 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -41,12 +41,19 @@
 								 #(has-xml-extension? %)]]
     (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
 
+(defn output-files [output-dir stylesheet]
+	"Returns a function that runs the conversion and writes out the file"
+	; Written as a clojure to keep the main convert-files function
+	; uncluttered.  
+	(fn [x] (spit (str output-dir (.getName x)) (convert stylesheet x))))
+
 (defn convert-files [{input-dir  :inputdir
                       output-dir :outputdir
                       schema     :schema
                       single     :single}]
   "Apply the conversion stylesheet to the input files."
-	(let [stylesheet (conversion-stylesheet schema)]
+	(let [stylesheet (conversion-stylesheet schema)
+				output (output-files output-dir stylesheet)]
 		(if single
-			(doall (map #(spit (str output-dir (.getName %)) (convert stylesheet %)) (input-files input-dir)))
-			(doall (pmap #(spit (str output-dir (.getName %)) (convert stylesheet %)) (input-files input-dir))))))
+			(doall (map output (input-files input-dir)))
+			(doall (pmap output (input-files input-dir))))))
