@@ -9,9 +9,9 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Tue Feb 28 13:59:22 CST 2012
+;;; Last Modified: Sat May 26 08:58:22 CDT 2012
 ;;;
-;;; Copyright © 2011 Board of Regents of the University of Nebraska-
+;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
 ;;;
 ;;; Abbot is distributed in the hope that it will be useful, but
