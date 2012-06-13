@@ -41,11 +41,11 @@
 								 #(has-xml-extension? %)]]
     (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
 
-(defn output-files [output-dir stylesheet]
+(defn converter [output-dir stylesheet]
 	"Returns a function that runs the conversion and writes out the file"
 	; Written as a clojure to keep the main convert-files function
 	; uncluttered.  
-	(fn [x] (spit (str output-dir (.getName x)) (convert stylesheet x))))
+	(fn [x] (spit (str output-dir (.getName x)) (apply-master stylesheet x))))
 
 (defn convert-files [{input-dir  :inputdir
                       output-dir :outputdir
@@ -53,7 +53,8 @@
                       single     :single}]
   "Apply the conversion stylesheet to the input files."
 	(let [stylesheet (conversion-stylesheet schema)
-				output (output-files output-dir stylesheet)]
+				converter (converter output-dir stylesheet)
+        input (input-files input-dir)]
 		(if single
-			(doall (map output (input-files input-dir)))
-			(doall (pmap output (input-files input-dir))))))
+			(doall (map converter input))
+			(doall (pmap converter input)))))

@@ -9,7 +9,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Sat May 26 08:58:22 CDT 2012
+;;; Last Modified: Wed Jun 13 14:48:07 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -40,6 +40,7 @@
     (fn [x] (conversion-xslt x))))
 
 
-(defn convert [stylesheet xml-file]
+(defn apply-master [stylesheet xml-file]
+  "Apply master stylesheet to individual XML file."
   (let [xmlfile (sax/compile-xml xml-file)]
     (stylesheet xmlfile)))
