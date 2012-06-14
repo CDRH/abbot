@@ -45,4 +45,5 @@
 				(println (format "Version %s", version))
 				(System/exit 0))
 			(:help options) (do (println banner))
-			:else (convert-files options))))
+			:else (convert-files options)))
+			(shutdown-agents))
