@@ -57,4 +57,4 @@
         input (input-files input-dir)]
 		(if single
 			(doall (map converter input))
-      (doall (map #(future (converter %)) input)))))
+      (doall (pmap converter input)))))
