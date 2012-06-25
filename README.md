@@ -56,13 +56,20 @@ So if you want to start playing with different target schemas and custom mapping
 Building from (and Tinkering with) the Source
 ---------------------------------------------
 
-Abbot is built using a combination of XSLT and Clojure using the Leiningen build tool.  So assuming you have both Clojure (we're using version 1.4) and the current copy of Leiningen, you should be able to type:
+Abbot is built using a combination of XSLT and [Clojure](http://clojure.org/) using the [Leiningen](http://leiningen.org/) build tool.  So assuming you have both Clojure (we're using version 1.4) and the current copy of Leiningen, you should be able to type:
 
-lein deps
-lein uberjar
+  lein deps
+  lein uberjar
 
 to generate the current SNAPSHOT.
 
 The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), Abbot will proceed to apply it to all the documents in the input directory.
 
 So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT\_HOME/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
+
+License, etc.
+-------------
+
+Written and maintained by Brian Pytlik-Zillig and Stephen Ramsay for the [Center for Digital Research in the Humanities](http://cdrh.unl.edu/) at the University of Nebraska-Lincoln.
+
+Copyright © 2011-2012 Board of Regents of the University of Nebraska-Lincoln.  Norman may be freely distributed and/or modified subject to certain conditions.  It is made available in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See LICENSE for more details.
