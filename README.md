@@ -6,7 +6,7 @@ Version 0.4.7.
 
 A sepulchral voice reverberating through the monastery, says . . .
 
-*This is pre-release software.*  It may fail to compile.  It might have undocumented features.  It certainly has unimplemented features.  It definitely has bugs.  You have been warned.  See CHANGES for details on how things are going.
+*This is pre-release software.*  It may fail to compile.  It might have undocumented features.  It certainly has unimplemented features.  It definitely has bugs.  You have been warned.  Watch this space for updates.
 
 Description
 -----------
