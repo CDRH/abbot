@@ -58,8 +58,8 @@ Building from (and Tinkering with) the Source
 
 Abbot is built using a combination of XSLT and [Clojure](http://clojure.org/) using the [Leiningen](http://leiningen.org/) build tool.  So assuming you have both Clojure (we're using version 1.4) and the current copy of Leiningen, you should be able to type:
 
-  lein deps
-  lein uberjar
+	lein deps
+	lein uberjar
 
 to generate the current SNAPSHOT.
 
