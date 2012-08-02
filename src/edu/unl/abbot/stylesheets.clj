@@ -1,15 +1,15 @@
 
 ;;; stylesheets.clj 
 ;;;
-;;; This file is part of Abbot.  It loads the metastylesheet,
-;;; XML Schema, and abbot_config.xml files, and generates the
-;;; conversion stylesheet.
+;;; This file is part of Abbot.  It loads the metastylesheet
+;;; and XML Schema and generates the conversion stylesheet.  The
+;;; customization file is loaded and parsed by customization.clj
 ;;;
 ;;; Written and Maintained by Brian Pytlik-Zillig and Stephen Ramsay
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Wed Jun 13 14:48:07 CDT 2012
+;;; Last Modified: Thu Aug 02 15:27:17 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -23,6 +23,7 @@
 	(import
 		(java.io File))
   (:use edu.unl.abbot.utils)
+	(:use clojure.data.xml)
 	(:require [saxon :as sax]))
 
 ;; Creates the conversion stylesheet (the XSLT that does the actual
@@ -34,7 +35,9 @@
 (defn conversion-stylesheet [schema]
   "Returns the conversion stylesheet (as a function)"
   (let [rng-file (sax/compile-xml (urlify schema))
+
         meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+
         meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))
 				conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
     (fn [x] (conversion-xslt x))))
