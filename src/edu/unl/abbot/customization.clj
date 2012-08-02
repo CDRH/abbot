@@ -24,3 +24,13 @@
   (:use edu.unl.abbot.utils)
 	(:use clojure.data.xml)
 	(:require [saxon :as sax]))
+
+(defn meta-stylesheet [config]
+	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas-test.xsl"
+			  abbot_config (urlify config)]
+				(sax/compile-xslt (java.net.URL. meta-url)
+
+
+		
+
+
