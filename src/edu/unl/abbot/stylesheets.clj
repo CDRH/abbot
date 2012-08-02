@@ -9,7 +9,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Aug 02 15:27:17 CDT 2012
+;;; Last Modified: Thu Aug 02 17:56:02 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -26,19 +26,24 @@
 	(:use clojure.data.xml)
 	(:require [saxon :as sax]))
 
+(defn create-meta-stylesheet [custom]
+	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+				;meta-input (java.io.StringReader. (slurp meta-url))
+				custom-input (java.io.StringReader. (slurp custom))
+				;meta-map (parse meta-input)
+	      custom-map (parse custom)]
+		(fn [x] ((sax/compile-xslt (java.net.URL. meta-url)) x))))
+
 ;; Creates the conversion stylesheet (the XSLT that does the actual
 ;; conversion) from the meta-stylesheet, and returns it as a function.
 ;;
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
-(defn conversion-stylesheet [schema]
+(defn conversion-stylesheet [schema custom]
   "Returns the conversion stylesheet (as a function)"
   (let [rng-file (sax/compile-xml (urlify schema))
-
-        meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-
-        meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))
+        meta-stylesheet (create-meta-stylesheet custom)
 				conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
     (fn [x] (conversion-xslt x))))
 

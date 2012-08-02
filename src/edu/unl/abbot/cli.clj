@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Jun 14 14:08:27 CDT 2012
+;;; Last Modified: Thu Aug 02 16:33:22 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See LICENSE for details.
@@ -31,7 +31,7 @@
 (defn -main [& args]
   "Process command-line switches and call main conversion function"
   (let [opts (c/cli args
-    ["-c" "--config" "Abbot config" :default "http://abbot.unl.edu/abbot_config.xml"]
+    ["-c" "--custom" "Abbot customization" :default "http://abbot.unl.edu/abbot_config.xml"]
     ["-t" "--schema" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"]
     ["-s" "--single" "Run in single-threaded mode" :default false] 
     ["-i" "--inputdir" "Input directory path" :default (str abbot-home "/input")]

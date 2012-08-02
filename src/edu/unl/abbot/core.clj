@@ -50,9 +50,10 @@
 (defn convert-files [{input-dir  :inputdir
                       output-dir :outputdir
                       schema     :schema
+											custom 		 :custom
                       single     :single}]
   "Apply the conversion stylesheet to the input files."
-	(let [stylesheet (conversion-stylesheet schema)
+	(let [stylesheet (conversion-stylesheet schema custom)
 				converter (converter output-dir stylesheet)
         input (input-files input-dir)]
 		(if single
