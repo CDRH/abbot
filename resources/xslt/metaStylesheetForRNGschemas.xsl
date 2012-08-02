@@ -378,7 +378,7 @@
                <wxsl:if
                   test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::emptyNode)">
                   <wxsl:copy-of
-                     select="$thisNodeAfterTransformation/child::*[name()!='emptyNode'] | $thisNodeAfterTransformation/processing-instruction()"
+                     select="$thisNodeAfterTransformation/child::*[name()!='emptyNode'][name()!='cdata'] | $thisNodeAfterTransformation/processing-instruction() | $thisNodeAfterTransformation/cdata/text()"
                      copy-namespaces="no"/>
                </wxsl:if>
 
@@ -401,14 +401,16 @@
          <wxsl:template name="forLoop">
             <wxsl:param name="loopNumber"/>
             <wxsl:param name="counterNumber"/>
-            <wxsl:if test="number($loopNumber) &lt;= number($counterNumber)">
+            <wxsl:if test="number($loopNumber) le number($counterNumber)">
                <!-- retain for debugging
                   [[[counterNumber:<wxsl:value-of select="$counterNumber"/>]]]
                   {{{loopNumber:<wxsl:value-of select="$loopNumber"/>}}}
                -->
-               <wxsl:value-of select="$gapCharacter"/>
+               <cdata>
+                  <wxsl:value-of select="$gapCharacter"/>
+               </cdata>
             </wxsl:if>
-            <wxsl:if test="number($loopNumber) &lt;= number($counterNumber)">
+            <wxsl:if test="number($loopNumber) le number($counterNumber)">
                <wxsl:call-template name="forLoop">
                   <wxsl:with-param name="loopNumber">
                      <wxsl:value-of select="$loopNumber + 1"/>
