@@ -1,3 +1,25 @@
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-06
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-06
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-06
+
+    Version bump.
+    
+    Added data.xml to dependencies.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-06
+
+    Changed file IO routine for input files.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-06
+
+    Added some standard files.
+
 Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
 
     Working on adding config file to metastylesheet.
