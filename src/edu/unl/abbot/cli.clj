@@ -8,14 +8,14 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Aug 02 16:33:22 CDT 2012
+;;; Last Modified: Mon Aug 06 17:13:01 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
-;;; Lincoln (and others).  See LICENSE for details.
+;;; Lincoln (and others).  See COPYING for details.
 ;;;
 ;;; Abbot is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See LICENSE
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING
 ;;; for more details.
 
 (ns edu.unl.abbot.cli

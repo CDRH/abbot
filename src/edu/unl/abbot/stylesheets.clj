@@ -9,29 +9,32 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Aug 02 17:56:02 CDT 2012
+;;; Last Modified: Mon Aug 06 17:13:22 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
-;;; Lincoln (and others).  See LICENSE for details.
+;;; Lincoln (and others).  See COPYING for details.
 ;;;
 ;;; Abbot is distributed in the hope that it will be useful, but
 ;;; WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See LICENSE
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING
 ;;; for more details.
 
 (ns edu.unl.abbot.stylesheets
-	(import
-		(java.io File))
+	(:import
+		(java.io InputStreamReader
+						 FileInputStream))
   (:use edu.unl.abbot.utils)
 	(:use clojure.data.xml)
-	(:require [saxon :as sax]))
+	(:require [saxon :as sax])
+	(:require [clojure.java.io :as io]))
 
 (defn create-meta-stylesheet [custom]
-	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"]
 				;meta-input (java.io.StringReader. (slurp meta-url))
-				custom-input (java.io.StringReader. (slurp custom))
+				;custom-input (java.io.InputStreamReader. (java.io.FileInputStream. custom) "UTF-8")
 				;meta-map (parse meta-input)
-	      custom-map (parse custom)]
+	      ;custom-map (parse custom-input)]
+		;(.close custom-input)
 		(fn [x] ((sax/compile-xslt (java.net.URL. meta-url)) x))))
 
 ;; Creates the conversion stylesheet (the XSLT that does the actual
@@ -50,5 +53,6 @@
 
 (defn apply-master [stylesheet xml-file]
   "Apply master stylesheet to individual XML file."
-  (let [xmlfile (sax/compile-xml xml-file)]
-    (stylesheet xmlfile)))
+  (with-open [rdr (io/reader xml-file)]
+		(let [xml (sax/compile-xml rdr)]
+			(stylesheet xml))))
