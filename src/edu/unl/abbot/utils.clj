@@ -19,7 +19,7 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.utils
-	(import
+	(:import
 		(java.io File)))
 
 (def version "0.4.8")

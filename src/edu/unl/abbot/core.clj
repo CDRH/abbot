@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Mon Aug 06 17:13:16 CDT 2012
+;;; Last Modified: Mon Aug 06 17:39:32 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -19,12 +19,12 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.core
+  (:import
+    (java.io File)) 
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
 	(:use clojure.java.io)
-  (import
-    (java.io File)) 
-		(:gen-class))
+	(:gen-class))
 
 (defn input-files [input-dir]
   "Read input file and do some basic sanity checking."

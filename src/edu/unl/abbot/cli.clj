@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Mon Aug 06 17:13:01 CDT 2012
+;;; Last Modified: Mon Aug 06 17:39:27 CDT 2012
 ;;;
 ;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -19,12 +19,12 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.cli
+  (:import
+    (java.io File)) 
 	(:use edu.unl.abbot.core)
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
-  (import
-    (java.io File)) 
-		(:gen-class))
+	(:gen-class))
 
 (require '[clojure.tools.cli :as c])
 
