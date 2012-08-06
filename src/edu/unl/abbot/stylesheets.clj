@@ -29,12 +29,12 @@
 	(:require [clojure.java.io :as io]))
 
 (defn create-meta-stylesheet [custom]
-	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-				meta-input (java.io.StringReader. (slurp meta-url))
-				custom-input (java.io.InputStreamReader. (java.io.FileInputStream. custom) "UTF-8")
-				meta-map (parse meta-input)
-	      custom-map (parse custom-input)]
-		(.close custom-input)
+	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"]
+				;meta-input (java.io.StringReader. (slurp meta-url))
+				;custom-input (java.io.InputStreamReader. (java.io.FileInputStream. custom) "UTF-8")
+				;meta-map (parse meta-input)
+	      ;custom-map (parse custom-input)]
+		;(.close custom-input)
 		(fn [x] ((sax/compile-xslt (java.net.URL. meta-url)) x))))
 
 ;; Creates the conversion stylesheet (the XSLT that does the actual
