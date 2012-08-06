@@ -1,0 +1,460 @@
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    Working on adding config file to metastylesheet.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    ...
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    Enabled config option.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    Updated file.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    Minor adjustments to comments.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-08-02
+
+    Added customization.clj file.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-07-31
+
+    Added data.xml dependency.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-07-31
+
+    Added data.xml jar.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    ...
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    Minor adjustment.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    Added license and warranty information.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    Minor correction.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    Removed reference to CHANGES file.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-25
+
+    Shortened suffix.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-14
+
+    Version bump.  Reverted to pmap.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-14
+
+    Version bump.
+
+Merge: dbf7175 ce6d002
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-14
+
+    Merge branch 'master' of github.com:CDRH/abbot
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-14
+
+    With shutdown-agents.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-14
+
+    Experimenting with futures.  No shutdown-agents in this version.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-13
+
+    Mild refactoring.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-13
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-06-13
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-26
+
+    Minor change to copyright statement.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-25
+
+    Refactored main conversion function to remove clutter.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-25
+
+    Version bump to 0.4.4.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-25
+
+    Version bump to 0.4.4.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-07
+
+    Changed the language about our version of clojure from 1.3 to 1.4.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-07
+
+    ...
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-05-07
+
+    Recompiled abbot and rebuilt dependencies for clojure 1.4.
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-03-28
+
+    Added <?xml-model href=""?> processing instruction. Specifies location of schema.
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-03-23
+
+    Improved namespace handling in both meta-stylesheet and config file.
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-03-22
+
+    Improved namespace handling in the meta stylesheet.
+
+Frank Smutniak <fsmutniak@gmail.com>	2012-03-19
+
+    Revert 2a3d38f70ed8d37094273a00adcde261944c8b60^..HEAD
+
+Frank Smutniak <fsmutniak@gmail.com>	2012-03-19
+
+    Revert 2a3d38f70ed8d37094273a00adcde261944c8b60^..HEAD
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-03-13
+
+    Tightened various XPaths in templates to eliminate ambiguous rule match errors.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Deleted old tools.cli.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Updated clojure.tools.cli.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Updated options parsing to conform with new version of tools.cli.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Updates version of clojure.tools.cli.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-04
+
+    ...
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-02
+
+    Fixed typo.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-02
+
+    Version bump.
+
+Merge: 7a46a7d 8a546f9
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-02
+
+    Merge branch 'master' of github.com:CDRH/abbot
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-03-02
+
+    Minor adjustment to comment on conversion-stylesheet function.
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-02-28
+
+    Fixed a bug that appeared (only when) when usingtei_all.rng schema.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-28
+
+    Refactored conversion-stylesheet function to precompile the
+    conversion stylesheet within the closure (before generating the compiled
+    stylesheet itself).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-28
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-28
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Minor adjustment to docstring.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    The -convert function now has variable arity.
+    
+    With default schema:
+    
+    abbot.convert("/home/sramsay/input", "/home/sramsay/output/")
+    
+    With user-supplied schema:
+    
+    abbot.convert("/home/sramsay/input", "/home/sramsay/output/", "/home/sramsay/projects/abbot/resources/target/tei-xl.rng");
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Rewrote core function to reflect changes in stylesheets.clj.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Added version variable.
+    
+    Added urlify function for normalizing paths.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Refactored conversion-stylesheet into a closure (that can be bound to
+    any stylesheet passed in at runtime).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Added version flag.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-26
+
+    Version bump.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-02-25
+
+    Working on parameterization of stylesheet functions.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Upgraded to clojure-1.3
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Abbot is now working with Clojure 1.3.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Cleaned version of source.
+
+Merge: 6417c6f 8239630
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Merge branch 'api'
+    
+    Conflicts:
+README.markdown           
+project.clj           
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Added temporary API build script to test.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-22
+
+    Restablized abbot.  All files (including abbot_config.xml) are now
+    read from URLs.  See Issues for details.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-20
+
+    Working on adding custom transforms to meta-stylesheet (stylesheet
+    function in stylesheets.clj)
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-19
+
+    Fixed parameters in convert function (resolving apparent parse error).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-18
+
+    Added version of metastylesheet with abbot_config commented out.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-17
+
+    Metastylesheet and target schema moved to external URL.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-17
+
+    Trying to generalize the source of the target schema.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Version bump (0.3.1)
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    stylesheets.clj now reads meta-stylesheet and target schema from jar.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Version bump.
+
+Merge: 2c75ca6 d35c0fb
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Merge branch 'api'
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Basic API is working.
+    
+    Refactored core.clj into cli.clj and Abbot.clj.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Removed SNAPSHOT string from uberjar, and updated README.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-12
+
+    Temporarily added binaries back into repo.
+    
+    This should be replaced with a self-contained (lein-based) build, and/or a self-contained jar in Downloads.
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-01-11
+
+    Added tei-all.rng
+
+Brian Pytlik Zillig <bzillig1@unl.edu>	2012-01-11
+
+    Added comment as a test.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-10
+
+    Version bump (to 1.2.1).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-10
+
+    Sanity has been restored.  The core clojure libraries have
+    been rolled back to 1.2.1 (with contrib).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-01
+
+    Trying to fix problems with standalone jar.
+
+Merge: a1603f3 64e6d81
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-01
+
+    Merge branch 'api'
+    
+    Conflicts:
+abbot-0.1.0-SNAPSHOT-standalone.jar           
+abbot-0.1.0-SNAPSHOT.jar           
+classes/clojure/tools/cli$group$fn__144.class           
+classes/clojure/tools/cli$group.class           
+classes/clojure/tools/cli$show_help$iter__72__76$fn__77$fn__78.class           
+classes/clojure/tools/cli$show_help$iter__72__76$fn__77.class           
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2012-01-01
+
+    Added directory parameters to -convert method.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-12-31
+
+    Cleaned out classes directory.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-12-31
+
+    Basic -convert function operational.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-12-31
+
+    Recompiled uberjar.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-12-15
+
+    Re-added class files and uberjar.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-25
+
+    Added markdown README.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-25
+
+    Testing out Markdown READMEs.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-19
+
+    The beginnings of a Java api.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    Cleaning out binaries . . .
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    Cleaning out binaries . . .
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    ...
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    Some initial fooling around with java-interop.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    More reordering . . .
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-18
+
+    Reordering dependencies (removed clojure-contrib from project.clj).
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-06
+
+    Minor changes to README.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-06
+
+    Minor change.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-05
+
+    Unspeakably minor change to code formatting.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-05
+
+    Minor changes to the README.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-05
+
+    Minor adjustment to README.
+
+Stephen Ramsay <sramsay.unl@gmail.com>	2011-11-05
+
+    first commit
