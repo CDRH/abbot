@@ -53,7 +53,7 @@
 											custom 		 :custom
                       single     :single}]
   "Apply the conversion stylesheet to the input files."
-	(let [stylesheet (conversion-stylesheet schema custom)
+	(let [stylesheet (conversion-stylesheet schema)
 				converter (converter output-dir stylesheet)
         input (input-files input-dir)]
 		(if single

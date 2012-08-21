@@ -28,7 +28,7 @@
 	(:require [saxon :as sax])
 	(:require [clojure.java.io :as io]))
 
-(defn create-meta-stylesheet [custom]
+(defn create-meta-stylesheet []
 	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"]
 				;meta-input (java.io.StringReader. (slurp meta-url))
 				;custom-input (java.io.InputStreamReader. (java.io.FileInputStream. custom) "UTF-8")
@@ -43,10 +43,10 @@
 ;; Templates from abbot_config.xml are read into the meta-stylesheet
 ;; at runtime (by the meta-stylesheet itself).
 
-(defn conversion-stylesheet [schema custom]
+(defn conversion-stylesheet [schema]
   "Returns the conversion stylesheet (as a function)"
   (let [rng-file (sax/compile-xml (urlify schema))
-        meta-stylesheet (create-meta-stylesheet custom)
+        meta-stylesheet (create-meta-stylesheet)
 				conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
     (fn [x] (conversion-xslt x))))
 
