@@ -47,7 +47,7 @@ Abbot reads a schema (we'll call it the "target schema") and automatically gener
 
 This works well for a surprising number of cases in which interoperability is the goal, but obviously won't work in more complicated cases.  When the mapping from some element in the documents to some element described in the schema is less obvious, you'll need to provide Abbot with a description of how that transformation should be undertaken.
 
-The key files, then, are the target schema (which is kept in $ABBOT\_HOME/target) and the abbot\_config.xml file (which is kept in $ABBOT\_HOME/config).  The config file simply contains XSLT templates (under the <custom-transformations> element).  Each one of these will be added at runtime to the stylesheet that is automatically generated from the target schema.
+The key files, then, are the target schema (which is kept in $ABBOT\_HOME/resources/target) and the abbot\_config.xml file (which is kept in $ABBOT\_HOME/resources/config).  The config file simply contains XSLT templates (under the <custom-transformations> element).  Each one of these will be added at runtime to the stylesheet that is automatically generated from the target schema.
 
 [Note: Once again, replacing this config file with a simplified language is one of the major development goals of Abbot.  In the meantime, you have to provide your own XSLT templates.  Whether this is still worth it in your particular case really depends on how much customization is required, though it may be that having Abbot take care of the trivial cases for you helps you quite a bit.]
 
@@ -56,20 +56,20 @@ So if you want to start playing with different target schemas and custom mapping
 Building from (and Tinkering with) the Source
 ---------------------------------------------
 
-Abbot is built using a combination of XSLT and [Clojure](http://clojure.org/) using the [Leiningen](http://leiningen.org/) build tool.  So assuming you have both Clojure (we're using version 1.4) and the current copy of Leiningen, you should be able to type:
+Abbot is built using a combination of XSLT and [Clojure](http://clojure.org/) using the [Leiningen](http://leiningen.org/) build tool.  So assuming you have both Clojure (we're using version 1.5) and the current copy of Leiningen, you should be able to type:
 
 	lein deps
 	lein uberjar
 
-to generate the current SNAPSHOT.
+to generate the current SNAPSHOT (which will appear in the $ABBOT\_HOME/target directory).
 
 The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), Abbot will proceed to apply it to all the documents in the input directory.
 
-So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT\_HOME/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
+So, if you're interested in tinkering with the XSLT part of things, you want to look in $ABBOT\_HOME/resources/xslt (where the metastylesheet resides).  All other parts of the system -- the compilation of the stylesheets, parallelized conversion, etc. -- are in the src directory.
 
 License, etc.
 -------------
 
 Written and maintained by Brian Pytlik-Zillig and Stephen Ramsay for the [Center for Digital Research in the Humanities](http://cdrh.unl.edu/) at the University of Nebraska-Lincoln.
 
-Copyright © 2011-2012 Board of Regents of the University of Nebraska-Lincoln.  Norman may be freely distributed and/or modified subject to certain conditions.  It is made available in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING for more details.
+Copyright © 2011-2013 Board of Regents of the University of Nebraska-Lincoln.  Norman may be freely distributed and/or modified subject to certain conditions.  It is made available in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING for more details.

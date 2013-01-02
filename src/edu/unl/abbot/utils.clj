@@ -10,7 +10,7 @@
 ;;;
 ;;; Last Modified: Mon Aug 06 17:13:29 CDT 2012
 ;;;
-;;; Copyright © 2011-2012 Board of Regents of the University of Nebraska-
+;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
 ;;;
 ;;; Abbot is distributed in the hope that it will be useful, but
