@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Mon Aug 06 17:13:29 CDT 2012
+;;; Last Modified: Thu Jan 03 10:06:16 CST 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -22,7 +22,7 @@
 	(:import
 		(java.io File)))
 
-(def version "0.5.0")
+(def version "0.5.1")
 
 (def abbot-home (System/getenv "ABBOT_HOME"))
 

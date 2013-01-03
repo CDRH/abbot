@@ -51,11 +51,11 @@
                       output-dir :outputdir
                       target		 :target
 											custom 		 :custom
-											ns 				 :ns
+											namespace  :namespace
                       single     :single
 											}]
   "Apply the conversion stylesheet to the input files."
-	(let [params (hash-map :n ns)
+	(let [params (hash-map :n namespace :c custom :t target)
 				stylesheet (conversion-stylesheet target params)
 				converter (converter output-dir stylesheet)
         input (input-files input-dir)]

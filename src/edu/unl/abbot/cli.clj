@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Tue Oct 30 10:31:13 CDT 2012
+;;; Last Modified: Thu Jan 03 10:03:18 CST 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
