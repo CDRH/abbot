@@ -6,7 +6,7 @@
    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
    xmlns:tei="http://www.tei-c.org/ns/1.0">
 
-   <sitemap file="context://config/abbot_config.xml" date="2012-02-29">
+   <sitemap date="2012-08-28">
 
       <transformations default="custom-transformation" loggingType="XPath">
 
@@ -17,34 +17,11 @@
          <custom-transformations>
 
             <transformation type="xslt" activate="yes">
-               <desc>adfghfghfgh</desc>
-               <xsl:template match="floatext" priority="1">
-                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
-                     <xsl:for-each select="./@*">
-                        <xsl:choose>
-                           <xsl:when test="name() ='lang'">
-                              <xsl:attribute name="xml:lang">
-                                 <xsl:value-of select="."/>
-                              </xsl:attribute>
-                           </xsl:when>
-                           <xsl:otherwise>
-                              <xsl:attribute name="{name()}">
-                                 <xsl:value-of select="."/>
-                              </xsl:attribute>
-                           </xsl:otherwise>
-                        </xsl:choose>
-                     </xsl:for-each>
-                     <xsl:apply-templates/>
-                  </xsl:element>
-               </xsl:template>
-            </transformation>
-
-            <transformation type="xslt" activate="yes">
                <desc>add 'div' around 'stage' where lacking</desc>
                <xsl:template match="stage[preceding-sibling::*[1][name()='sp' or name()='stage']]"
                   priority="1">
-                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
-                     <xsl:element name="stage" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="div" namespace="{$user-supplied-namespace}">
+                     <xsl:element name="stage" namespace="{$user-supplied-namespace}">
                         <xsl:copy-of select="@*"/>
                         <xsl:apply-templates/>
                      </xsl:element>
@@ -55,8 +32,8 @@
             <transformation type="xslt" activate="yes">
                <desc>add 'div' element around 'sp' where lacking</desc>
                <xsl:template match="sp[not(parent::div)]" priority="1">
-                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
-                     <xsl:element name="sp" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="div" namespace="{$user-supplied-namespace}">
+                     <xsl:element name="sp" namespace="{$user-supplied-namespace}">
                         <xsl:copy-of select="@*"/>
                         <xsl:apply-templates/>
                      </xsl:element>
@@ -67,7 +44,7 @@
             <transformation type="xslt" activate="yes">
                <desc>add required @scheme attibute to 'keywords'</desc>
                <xsl:template match="keywords[not(@scheme)]" priority="1">
-                  <xsl:element name="{name()}" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="{name()}" namespace="{$user-supplied-namespace}">
                      <xsl:copy-of select="@*"/>
                      <xsl:attribute name="scheme">lcsh</xsl:attribute>
                      <xsl:apply-templates/>
@@ -85,7 +62,7 @@
             <transformation type="xslt" activate="yes">
                <desc>add missing @ident to 'language'</desc>
                <xsl:template match="language[not(@ident)]" priority="1">
-                  <xsl:element name="language" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="language" namespace="{$user-supplied-namespace}">
                      <xsl:copy-of select="@*"/>
                      <xsl:attribute name="ident">
                         <xsl:value-of select="."/>
@@ -98,7 +75,7 @@
             <transformation type="xslt" activate="yes">
                <desc>convert note @anchored to boolean true-false</desc>
                <xsl:template match="note" priority="1">
-                  <xsl:element name="note" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="note" namespace="{$user-supplied-namespace}">
                      <xsl:for-each select="./@*">
                         <xsl:choose>
                            <xsl:when test="name() ='anchored'">
@@ -125,7 +102,7 @@
                   <xsl:variable name="gap_firstPass">
                      <xsl:choose>
                         <xsl:when test="lower-case(@extent)='1span'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -138,7 +115,7 @@
                         </xsl:when>
                         <xsl:when test="lower-case(@desc)='duplicate'"/>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -149,7 +126,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='replacement'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -160,7 +137,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -171,7 +148,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='symbol'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -182,7 +159,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -193,7 +170,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -205,7 +182,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -216,7 +193,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='music'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -227,7 +204,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='intruder'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -238,7 +215,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='lang=ara'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -250,7 +227,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='math'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -261,7 +238,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -273,7 +250,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 or more pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -286,7 +263,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 + pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -299,7 +276,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages +' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -312,7 +289,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='a few words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -324,7 +301,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='half a line' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -336,7 +313,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='remainder of note' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -348,7 +325,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='several letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -360,7 +337,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -373,7 +350,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -386,7 +363,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -405,7 +382,7 @@
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='intruder'"/>
                         <xsl:when
                            test="lower-case(@extent)='1 letter' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -420,7 +397,7 @@
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -433,7 +410,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -446,7 +423,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -459,7 +436,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -476,7 +453,7 @@
                            test="lower-case(@extent)='11 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='12 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -491,7 +468,7 @@
                            test="lower-case(@extent)='12 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='13 letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -504,7 +481,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -523,7 +500,7 @@
                            test="lower-case(@extent)='15 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='2 letter' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -536,7 +513,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -551,7 +528,7 @@
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='2 letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -564,7 +541,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -577,7 +554,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -600,7 +577,7 @@
                            test="lower-case(@extent)='26 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -613,7 +590,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -626,7 +603,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -641,7 +618,7 @@
                            test="lower-case(@extent)='3 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='3+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -654,7 +631,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -667,7 +644,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -682,7 +659,7 @@
                            test="lower-case(@extent)='4 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='4+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -701,7 +678,7 @@
                            test="lower-case(@extent)='5 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='5 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -714,7 +691,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -727,7 +704,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -742,7 +719,7 @@
                            test="lower-case(@extent)='6 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='6+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -755,7 +732,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -772,7 +749,7 @@
                            test="lower-case(@extent)='8 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='8 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -785,7 +762,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8+ letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -800,7 +777,7 @@
                            test="lower-case(@extent)='9 letters' and lower-case(@desc)='symbol'"/>
                         <xsl:when
                            test="lower-case(@extent)='9 letters' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -813,7 +790,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -826,7 +803,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -840,7 +817,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 line' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -853,7 +830,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -866,7 +843,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ lines' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -879,7 +856,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -892,7 +869,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -905,7 +882,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -918,7 +895,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -931,7 +908,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='14 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -944,7 +921,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -957,7 +934,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 lines' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -970,7 +947,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -983,7 +960,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 lines' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -996,7 +973,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1009,7 +986,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1022,7 +999,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1035,7 +1012,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 lines' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1048,7 +1025,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1061,7 +1038,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1074,7 +1051,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1087,7 +1064,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1100,7 +1077,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='9 lines' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1117,7 +1094,7 @@
                            test="lower-case(@extent)='1 number' and lower-case(@desc)='illegible'"/>
                         <xsl:when
                            test="lower-case(@extent)='0.5 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1130,7 +1107,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='intruder'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1145,7 +1122,7 @@
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='replacement'"/>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1159,7 +1136,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1172,7 +1149,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 page' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1185,7 +1162,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ page' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1198,7 +1175,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1211,7 +1188,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1223,7 +1200,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1+ pages'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1236,7 +1213,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1249,7 +1226,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1262,7 +1239,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1275,7 +1252,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1288,7 +1265,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='13 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1301,7 +1278,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='139 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1314,7 +1291,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='14 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1327,7 +1304,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='142+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1340,7 +1317,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1353,7 +1330,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='16 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1366,7 +1343,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1379,7 +1356,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 pages' and lower-case(@desc)='intruder'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1392,7 +1369,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='18 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1405,7 +1382,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='191 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1417,7 +1394,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2 pages'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1429,7 +1406,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2+ pages'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1442,7 +1419,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1456,7 +1433,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 page' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1469,7 +1446,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1482,7 +1459,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1495,7 +1472,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='20 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1508,7 +1485,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='207 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1521,7 +1498,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='21+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1534,7 +1511,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1547,7 +1524,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 pages' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1561,7 +1538,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='30 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1574,7 +1551,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='32 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1587,7 +1564,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='36 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1600,7 +1577,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 pages' and lower-case(@desc)='duplicate'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1613,7 +1590,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1626,7 +1603,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1639,7 +1616,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='400+ pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1652,7 +1629,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1665,7 +1642,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='50 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1678,7 +1655,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='53 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1691,7 +1668,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1704,7 +1681,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='62 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1717,7 +1694,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1730,7 +1707,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1743,7 +1720,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='88 pages' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1756,7 +1733,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1769,7 +1746,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1782,7 +1759,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 paragraph' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1796,7 +1773,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ paragraphs' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1809,7 +1786,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 paragraphs' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1822,7 +1799,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1834,7 +1811,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1 span' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1848,7 +1825,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1862,7 +1839,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 span' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1875,7 +1852,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 sspan' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1888,7 +1865,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='several words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1901,7 +1878,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1915,7 +1892,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1927,7 +1904,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1 word' and lower-case(@desc)='blank'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1941,7 +1918,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1 word' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1954,7 +1931,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ word' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1967,7 +1944,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='1+ words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1980,7 +1957,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='10 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -1993,7 +1970,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='11 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2006,7 +1983,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='12 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2019,7 +1996,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='15 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2032,7 +2009,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='16 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2045,7 +2022,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='17 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2058,7 +2035,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='19 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2071,7 +2048,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2084,7 +2061,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2 words' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2098,7 +2075,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='2+ words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2111,7 +2088,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2124,7 +2101,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='3+ words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2137,7 +2114,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='4 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2150,7 +2127,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2163,7 +2140,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='5 words' and lower-case(@desc)='foreign'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2177,7 +2154,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2190,7 +2167,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='6+ words' and lower-case(@desc)='missing'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2203,7 +2180,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='7 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2216,7 +2193,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='8 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2229,7 +2206,7 @@
                         </xsl:when>
                         <xsl:when
                            test="lower-case(@extent)='9 words' and lower-case(@desc)='illegible'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2241,7 +2218,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='1'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2252,7 +2229,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='2'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2263,7 +2240,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='3'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2275,7 +2252,7 @@
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='note'"/>
                         <xsl:when test="lower-case(@extent)='para'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2287,7 +2264,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:when test="lower-case(@extent)='span'">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each
                                  select="./@*[lower-case(name()) != 'extent'][lower-case(name()) != 'desc'][lower-case(name()) != 'disp'][lower-case(name()) != 'resp'][lower-case(name()) != 'ms']">
                                  <xsl:attribute name="{lower-case(name())}">
@@ -2299,7 +2276,7 @@
                            </xsl:element>
                         </xsl:when>
                         <xsl:otherwise>
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each select="./@*">
                                  <xsl:attribute name="{lower-case(name())}">
                                     <xsl:value-of select="lower-case(.)"/>
@@ -2314,7 +2291,7 @@
                   <xsl:for-each select="$gap_firstPass//gap">
                      <xsl:choose>
                         <xsl:when test="contains(@extent,' ')">
-                           <xsl:element name="gap" namespace="http://www.tei-c.org/ns/1.0">
+                           <xsl:element name="gap" namespace="{$user-supplied-namespace}">
                               <xsl:for-each select="@extent">
                                  <xsl:choose>
                                     <xsl:when test="contains(.,' ')">
@@ -2354,7 +2331,7 @@
                <desc>process the div element</desc>
                <xsl:template match="*[not(@type)][starts-with(lower-case(name()),'div')]"
                   priority="1">
-                  <xsl:element name="div" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="div" namespace="{$user-supplied-namespace}">
                      <xsl:for-each select="./@*">
                         <xsl:attribute name="{lower-case(name())}">
                            <xsl:value-of select="."/>
@@ -2368,20 +2345,31 @@
             <transformation type="xslt" activate="yes">
                <desc>process the root element</desc>
                <xsl:template match="*[not(parent::*)]" priority="1">
+
                   <xsl:processing-instruction name="xml-model">
-                     <xsl:text>href="http://abbot.unl.edu/tei_all.rng"</xsl:text>
+                     <xsl:text>href="</xsl:text>
+                     <xsl:value-of select="$user-supplied-xml-model"/>
+                     <xsl:text>"</xsl:text>
                   </xsl:processing-instruction>
-                  <TEI xmlns="http://www.tei-c.org/ns/1.0">
-                     <xsl:choose>
-                        <xsl:when test="@n or @id">
-                           <xsl:attribute name="xml:id">
-                              <xsl:value-of select="@n | @id"/>
-                           </xsl:attribute>
-                        </xsl:when>
-                        <xsl:otherwise/>
-                     </xsl:choose>
+
+                  <xsl:element name="TEI" namespace="{$user-supplied-namespace}">
+                     <xsl:for-each select="@*">
+                        <xsl:choose>
+                           <xsl:when
+                              test="name() = 'n' 
+                              or name() = 'id' 
+                              or name() = 'xml:id'">
+                              <xsl:attribute name="xml:id">
+                                 <xsl:value-of select="."/>
+                              </xsl:attribute>
+                           </xsl:when>
+                           <!--<xsl:otherwise>
+                              <xsl:apply-templates/>
+                           </xsl:otherwise>-->
+                        </xsl:choose>
+                     </xsl:for-each>
                      <xsl:apply-templates/>
-                  </TEI>
+                  </xsl:element>
                </xsl:template>
             </transformation>
 
@@ -2398,9 +2386,9 @@
             <transformation type="xslt" activate="yes">
                <desc>substitute 'floatingText' element for 'letter' element</desc>
                <xsl:template match="*[lower-case(name())='letter']" priority="1">
-                  <xsl:element name="floatingText" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="floatingText" namespace="{$user-supplied-namespace}">
                      <xsl:attribute name="type">letter</xsl:attribute>
-                     <xsl:element name="body" namespace="http://www.tei-c.org/ns/1.0">
+                     <xsl:element name="body" namespace="{$user-supplied-namespace}">
                         <xsl:apply-templates/>
                      </xsl:element>
                   </xsl:element>
@@ -2410,7 +2398,7 @@
             <transformation type="xslt" activate="yes">
                <desc>correct attributes on 'milestone'</desc>
                <xsl:template match="milestone" priority="1">
-                  <xsl:element name="milestone" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="milestone" namespace="{$user-supplied-namespace}">
                      <xsl:if test="@n">
                         <xsl:attribute name="n">
                            <xsl:value-of select="@n"/>
@@ -2436,7 +2424,7 @@
                <xsl:template match="p" priority="1">
                   <xsl:choose>
                      <xsl:when test="ancestor::cell">
-                        <xsl:element name="seg" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:element name="seg" namespace="{$user-supplied-namespace}">
                            <xsl:attribute name="type">p</xsl:attribute>
                            <xsl:apply-templates/>
                         </xsl:element>
@@ -2445,7 +2433,7 @@
                         <xsl:apply-templates/>
                      </xsl:when>
                      <xsl:otherwise>
-                        <xsl:element name="p" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:element name="p" namespace="{$user-supplied-namespace}">
                            <xsl:for-each select="attribute::*">
                               <xsl:choose>
                                  <xsl:when test="name()='TEIform'"/>
@@ -2473,7 +2461,7 @@
             <transformation type="xslt" activate="yes">
                <desc>replace 'sup' with hi@rend='sup'</desc>
                <xsl:template match="sup" priority="1">
-                  <xsl:element name="hi" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="hi" namespace="{$user-supplied-namespace}">
                      <xsl:attribute name="rend">sup</xsl:attribute>
                      <xsl:apply-templates/>
                   </xsl:element>
@@ -2483,7 +2471,7 @@
             <transformation type="xslt" activate="yes">
                <desc>replace tailnote with 'note' @type='tail'</desc>
                <xsl:template match="tailnote" priority="1">
-                  <xsl:element name="note" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="note" namespace="{$user-supplied-namespace}">
                      <xsl:choose>
                         <xsl:when test="lower-case(name())='tailnote'">
                            <xsl:attribute name="type">tail</xsl:attribute>
@@ -2497,7 +2485,7 @@
             <transformation type="xslt" activate="yes">
                <desc>replace headnote with 'note' @type='head'</desc>
                <xsl:template match="headnote" priority="1">
-                  <xsl:element name="note" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="note" namespace="{$user-supplied-namespace}">
                      <xsl:choose>
                         <xsl:when test="lower-case(name())='headnote'">
                            <xsl:attribute name="type">head</xsl:attribute>
@@ -2515,9 +2503,6 @@
                   priority="2">
                   <xsl:variable name="elementName">
                      <xsl:choose>
-                        <!--<xsl:when test="starts-with(lower-case(name()),'float')">
-                           <xsl:text>div</xsl:text>
-                        </xsl:when>-->
                         <xsl:when test="starts-with(lower-case(name()),'div')">
                            <xsl:text>div</xsl:text>
                         </xsl:when>
@@ -2526,7 +2511,7 @@
                         </xsl:otherwise>
                      </xsl:choose>
                   </xsl:variable>
-                  <xsl:element name="{$elementName}" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="{$elementName}" namespace="{$user-supplied-namespace}">
                      <xsl:for-each select="@*">
                         <xsl:choose>
                            <xsl:when test="lower-case(name())='type'">
@@ -2582,7 +2567,7 @@
                <desc>replace head tags with label tags for children of headnotes and tailnotes in
                   ECCO</desc>
                <xsl:template match="head[parent::headnote | parent::tailnote]" priority="1">
-                  <xsl:element name="label" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="label" namespace="{$user-supplied-namespace}">
                      <xsl:apply-templates/>
                   </xsl:element>
                </xsl:template>
@@ -2591,8 +2576,8 @@
             <transformation type="xslt" activate="yes">
                <desc>add 'text' parent to 'group' elements that lack them</desc>
                <xsl:template match="group[not(parent::text)]" priority="1">
-                  <xsl:element name="text" namespace="http://www.tei-c.org/ns/1.0">
-                     <xsl:element name="group" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="text" namespace="{$user-supplied-namespace}">
+                     <xsl:element name="group" namespace="{$user-supplied-namespace}">
                         <xsl:apply-templates/>
                      </xsl:element>
                   </xsl:element>
@@ -2600,9 +2585,9 @@
             </transformation>
 
             <transformation type="xslt" activate="yes">
-               <desc>convert @ref attributes to @facs attribute in ECCO texts</desc>
-               <xsl:template match="pb" priority="1">
-                  <xsl:element name="pb" namespace="http://www.tei-c.org/ns/1.0">
+               <desc>convert @ref attributes to @facs attribute </desc>
+               <xsl:template match="pb|PB" priority="1">
+                  <xsl:element name="pb" namespace="{$user-supplied-namespace}">
                      <xsl:for-each select="@*">
                         <xsl:choose>
                            <xsl:when test="lower-case(name())='ref'">
@@ -2638,7 +2623,7 @@
             <transformation type="xslt" activate="yes">
                <desc>replace @lang with @xml:lang for 'foreign' tags</desc>
                <xsl:template match="foreign" priority="1">
-                  <xsl:element name="foreign" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="foreign" namespace="{$user-supplied-namespace}">
                      <xsl:for-each select="@lang">
                         <xsl:attribute name="xml:lang">
                            <xsl:value-of select="."/>
@@ -2666,7 +2651,7 @@
                      </xsl:when>
                      <xsl:otherwise>
                         <xsl:if test="child::lb">
-                           <xsl:element name="lb" namespace="http://www.tei-c.org/ns/1.0"/>
+                           <xsl:element name="lb" namespace="{$user-supplied-namespace}"/>
                         </xsl:if>
                         <xsl:value-of select="@reg"/>
                      </xsl:otherwise>
@@ -2677,7 +2662,7 @@
             <transformation type="xslt" activate="yes">
                <desc>substitute 'quote' tag for 'q' tag</desc>
                <xsl:template match="q | Q" priority="1">
-                  <xsl:element name="quote" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="quote" namespace="{$user-supplied-namespace}">
                      <xsl:apply-templates/>
                   </xsl:element>
                </xsl:template>
@@ -2686,29 +2671,10 @@
             <transformation type="xslt" activate="yes">
                <desc>retain 'abbr'</desc>
                <xsl:template match="abbr" priority="1">
-                  <xsl:element name="abbr" namespace="http://www.tei-c.org/ns/1.0">
+                  <xsl:element name="abbr" namespace="{$user-supplied-namespace}">
                      <xsl:copy-of select="@*" copy-namespaces="no"/>
                      <xsl:apply-templates/>
                   </xsl:element>
-               </xsl:template>
-            </transformation>
-
-            <transformation type="xslt" activate="yes">
-               <desc>add 'change' in revisionDesc</desc>
-               <xsl:template match="teiHeader | teiheader" priority="1">
-                  <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
-                     <xsl:copy-of select="@*"/>
-                     <xsl:apply-templates/>
-                     <xsl:element name="revisionDesc" xmlns="http://www.tei-c.org/ns/1.0">
-                        <xsl:element name="change" xmlns="http://www.tei-c.org/ns/1.0">
-                           <xsl:attribute name="when">
-                              <xsl:value-of select="current-date()"/>
-                           </xsl:attribute>
-                           <xsl:element name="name" xmlns="http://www.tei-c.org/ns/1.0">
-                              <xsl:attribute name="xml:id">bpz</xsl:attribute>Pytlik Zillig,
-                              B.</xsl:element> Conversion to TEI by Abbot</xsl:element>
-                     </xsl:element>
-                  </teiHeader>
                </xsl:template>
             </transformation>
 
@@ -2717,7 +2683,7 @@
                <xsl:template match="text" priority="1">
                   <xsl:choose>
                      <xsl:when test="ancestor::text and parent::q">
-                        <xsl:element name="floatingText" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:element name="floatingText" namespace="{$user-supplied-namespace}">
                            <xsl:if test="descendant::body/*[starts-with(name(),'div')]/@type">
                               <xsl:attribute name="type">
                                  <xsl:choose>
@@ -2757,7 +2723,7 @@
                                  <xsl:apply-templates/>
                               </xsl:when>
                               <xsl:otherwise>
-                                 <xsl:element name="body" namespace="http://www.tei-c.org/ns/1.0">
+                                 <xsl:element name="body" namespace="{$user-supplied-namespace}">
                                     <xsl:apply-templates/>
                                  </xsl:element>
                               </xsl:otherwise>
@@ -2767,7 +2733,7 @@
                         </xsl:element>
                      </xsl:when>
                      <xsl:when test="ancestor::text and not(ancestor::group)">
-                        <xsl:element name="floatingText" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:element name="floatingText" namespace="{$user-supplied-namespace}">
                            <xsl:if test="@useAttributeForFloatingText">
                               <xsl:attribute name="type">
                                  <xsl:value-of
@@ -2781,7 +2747,7 @@
                                  <xsl:apply-templates/>
                               </xsl:when>
                               <xsl:otherwise>
-                                 <xsl:element name="body" namespace="http://www.tei-c.org/ns/1.0">
+                                 <xsl:element name="body" namespace="{$user-supplied-namespace}">
                                     <xsl:apply-templates/>
                                  </xsl:element>
                               </xsl:otherwise>
@@ -2791,7 +2757,7 @@
                         </xsl:element>
                      </xsl:when>
                      <xsl:otherwise>
-                        <xsl:element name="text" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:element name="text" namespace="{$user-supplied-namespace}">
                            <xsl:choose>
                               <xsl:when test="@lang">
                                  <xsl:attribute name="xml:lang">

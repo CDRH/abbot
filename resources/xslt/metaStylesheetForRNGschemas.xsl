@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wxsl="http://www.w3.org/1999/XSL/Transform2"
    version="2.0" exclude-result-prefixes="#all" xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:rng="http://relaxng.org/ns/structure/1.0"
+   xmlns:rng="http://relaxng.org/ns/structure/1.0"
    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 
    <!-- ###########
@@ -12,7 +12,7 @@
     stylesheet that coverts arbitrary XML files into a format that conforms to the 
     RelaxNG input schema. 
     
-    Copyright © 2007-20012 The Board of  Regents of the University of Nebraska.  
+    Copyright © 2007-20013 The Board of  Regents of the University of Nebraska.  
     
     All rights reserved. Please see LICENSE for details.
   ##########  -->
@@ -20,6 +20,19 @@
    <xsl:strip-space elements="*"/>
 
    <xsl:namespace-alias stylesheet-prefix="wxsl" result-prefix="xsl"/>
+
+   <!-- ########## location of custom configuration file ########## -->
+   <!--<xsl:param name="c">http://abbot.unl.edu/bpz_config.xml</xsl:param>-->
+
+   <xsl:param name="c"/>
+
+   <!-- ########## location of target RNG schema file ########## -->
+   <!--<xsl:param name="t">http://abbot.unl.edu/tei_all.rng</xsl:param>-->
+
+   <xsl:param name="t"/>
+
+   <!-- ########## xml namespace of source file(s) ########## -->
+   <xsl:param name="n"/>
 
    <xsl:param name="date" select="current-date()"/>
 
@@ -182,14 +195,36 @@
    <xsl:template match="rng:param[@name='pattern']"/>
 
    <xsl:template match="*[not(parent::*)]">
-      <wxsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-         xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:d="function">
+      <wxsl:stylesheet>
+         <xsl:namespace name="d">function</xsl:namespace>
+         <xsl:namespace name="xsl">http://www.w3.org/1999/XSL/Transform</xsl:namespace>
          <xsl:namespace name="xs">http://www.w3.org/2001/XMLSchema</xsl:namespace>
+
+         <!-- ######## begin addition of user-supplied xpath-default-namespace, here identified as $n -->
+         <xsl:choose>
+            <xsl:when test="$n != ''">
+               <xsl:attribute name="xpath-default-namespace">
+                  <xsl:value-of select="$n"/>
+               </xsl:attribute>
+            </xsl:when>
+         </xsl:choose>
+         <!-- ######## end addition of user-supplied xpath-default-namespace, here identified as $n -->
+
+         <xsl:attribute name="version">2.0</xsl:attribute>
+
          <wxsl:strip-space elements="*"/>
          <wxsl:variable name="gapCharacter">&#9679;</wxsl:variable>
          <wxsl:output method="xml" indent="yes" encoding="utf-8"/>
          <wxsl:param name="file"/>
          <wxsl:param name="date"/>
+
+         <wxsl:param name="user-supplied-namespace">
+            <xsl:value-of select="$n"/>
+         </wxsl:param>
+
+         <wxsl:param name="user-supplied-xml-model">
+            <xsl:value-of select="$t"/>
+         </wxsl:param>
 
          <wxsl:function name="d:levenshteintest">
             <wxsl:param name="s" as="xs:string"/>
@@ -253,12 +288,8 @@
 
          <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of select="system-property('xsl:vendor')"/></xsl:comment>
 
-         <!-- ########### begin implementation of the config file ########### -->
-         <!--<xsl:for-each
-            select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']"> -->
-
-         <xsl:for-each
-            select="document('http://abbot.unl.edu/abbot_config.xml')/*//transformation[@activate='yes']">
+         <!-- ########### begin implementation of the config file, as specified in $c param ########### -->
+         <xsl:for-each select="document($c)/*//transformation[@activate='yes']">
 
             <xsl:comment>
                <xsl:text>Begin </xsl:text>
@@ -312,9 +343,9 @@
                <!-- end writing the param that IDs the template for use in the log -->
 
                <!-- begin writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -->
-               <wxsl:variable name="elementName">
+               <!--<wxsl:param name="elementName">
                   <wxsl:value-of select="lower-case(name())"/>
-               </wxsl:variable>
+               </wxsl:param>-->
                <!-- end writing the meta-variable that writes the $elementName variable in the conversion stylesheet  -->
 
                <!-- $$$$$ Begin transformation described in abbot_config.xml $$$$$ -->
@@ -333,41 +364,6 @@
                            exclude-result-prefixes="#all"/>
                      </xsl:when>
 
-                     <xsl:when
-                        test="child::element/@choice='change' and descendant::attribute/@choice='delete'">
-                        <!-- for changing an element by DELETING its attribute(s) -->
-                        <wxsl:element
-                           name="{concat($leftOfVariable,'elementName',$rightOfVariable)}">
-                           <wxsl:apply-templates/>
-                        </wxsl:element>
-                     </xsl:when>
-                     <xsl:when
-                        test="child::element/@choice='delete' 
-              and descendant::attribute/@choice='change' 
-              and descendant::content/@use[starts-with(.,'@')] 
-              and descendant::content/@choice='text'">
-                        <!-- for deleting an element and replacing it with the value of that element's attribute -->
-                        <xsl:element name="xsl:value-of">
-                           <xsl:attribute name="select">
-                              <xsl:value-of select="descendant::content/@use"/>
-                           </xsl:attribute>
-                        </xsl:element>
-                     </xsl:when>
-                     <xsl:when
-                        test="child::element/@choice='change' and descendant::attribute/@choice='add'">
-                        <!-- for changing an element by ADDING an attribute or attributes -->
-                        <wxsl:element
-                           name="{concat($leftOfVariable,'elementName',$rightOfVariable)}">
-                           <wxsl:attribute name="{descendant::attribute/@n}">
-                              <xsl:choose>
-                                 <xsl:when test="descendant::content/@choice='text'">
-                                    <wxsl:value-of select="."/>
-                                 </xsl:when>
-                              </xsl:choose>
-                           </wxsl:attribute>
-                           <wxsl:apply-templates/>
-                        </wxsl:element>
-                     </xsl:when>
                   </xsl:choose>
                </xsl:element>
 
@@ -376,7 +372,7 @@
                <!-- @@@@ End custom log entry. @@@@ -->
 
                <wxsl:if
-                  test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::emptyNode)">
+                  test="count($thisNodeAfterTransformation/child::*) &gt; 1 and ($thisNodeAfterTransformation/child::*[name()='emptyNode'])">
                   <wxsl:copy-of
                      select="$thisNodeAfterTransformation/child::*[name()!='emptyNode'][name()!='cdata'] | $thisNodeAfterTransformation/processing-instruction() | $thisNodeAfterTransformation/cdata/text()"
                      copy-namespaces="no"/>
@@ -395,7 +391,6 @@
 
          <!-- ########### end implementation of the config file ########### -->
 
-         <!--dfgdfgdgdfgdfgdgdgdfg   -->
          <xsl:apply-templates/>
 
          <wxsl:template name="forLoop">
@@ -424,13 +419,6 @@
 
       </wxsl:stylesheet>
    </xsl:template>
-
-   <!-- hide this: <define name="data.probability">
-      <data type="double">
-         <param name="minInclusive">0</param>
-         <param name="maxInclusive">1</param>
-      </data>
-   </define> -->
 
    <xsl:template match="rng:define[not(child::rng:element)]"/>
 
@@ -483,19 +471,19 @@
             <!-- end writing of match value -->
          </xsl:attribute>
 
-         <!-- begin writing the param that describes the template for use in the log -->
-         <xsl:element name="xsl:param">
-            <xsl:attribute name="name">desc</xsl:attribute>
-            <xsl:text>examine </xsl:text>
-         </xsl:element>
-         <!-- end writing the param that describes the template for use in the log -->
-
          <!-- begin writing the param that IDs the template for use in the log -->
          <xsl:element name="xsl:param">
             <xsl:attribute name="name">templateID</xsl:attribute>
             <xsl:value-of select="generate-id()"/>
          </xsl:element>
          <!-- end writing the param that IDs the template for use in the log -->
+
+         <!-- begin writing the param that describes the template for use in the log -->
+         <xsl:element name="xsl:param">
+            <xsl:attribute name="name">desc</xsl:attribute>
+            <xsl:text>examine </xsl:text>
+         </xsl:element>
+         <!-- end writing the param that describes the template for use in the log -->
 
          <!-- begin writing the param that IDs the element's ATTRIBUTES for use in the log -->
          <xsl:element name="xsl:param">
@@ -508,7 +496,7 @@
          <xsl:element name="xsl:variable">
             <xsl:attribute name="name">thisNodeAfterTransformation</xsl:attribute>
 
-            <xsl:element name="{$attributeName}" namespace="http://www.tei-c.org/ns/1.0">
+            <wxsl:element name="{$attributeName}" namespace="{$n}">
 
                <!-- begin writing attribute handler -->
                <wxsl:for-each select="./@*">
@@ -550,7 +538,7 @@
 
                <wxsl:apply-templates/>
 
-            </xsl:element>
+            </wxsl:element>
 
          </xsl:element>
          <!-- end writing the variable that describes this node after transformation -->
