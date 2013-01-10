@@ -49,10 +49,10 @@
 
 (defn convert-files [{input-dir  :inputdir
                       output-dir :outputdir
-                      target		 :target
 											custom 		 :custom
 											namespace  :namespace
                       single     :single
+                      target		 :target
 											}]
   "Apply the conversion stylesheet to the input files."
 	(let [params (hash-map :n namespace :c custom :t target)

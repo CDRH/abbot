@@ -7,7 +7,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Mon Aug 06 17:13:09 CDT 2012
+;;; Last Modified: Thu Jan 10 14:52:36 CST 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -30,6 +30,8 @@
   	:methods [
 			[convert [String String] void]
 			[convert [String String String] void]
+			[convert [String String String String] void]
+			[convert [String String String String String] void]
 			]))
 
 (defn -init []
@@ -40,10 +42,28 @@
 	([this inputdir outputdir]
 		(let [opts {:inputdir inputdir
 								:outputdir outputdir
-								:schema "http://abbot.unl.edu/tei-xl.rng"}]
+								:custom "http://abbot.unl.edu/abbot_config.xml"
+								:namespace "http://www.tei-c.org/ns/1.0"
+								:target "http://abbot.unl.edu/tei-xl.rng"}]
 			(convert-files opts)))
-	([this inputdir outputdir schema]
+	([this inputdir outputdir custom]
 	(let [opts {:inputdir inputdir
 			  			:outputdir outputdir
-							:schema schema}] 
+							:custom custom
+							:namespace "http://www.tei-c.org/ns/1.0"
+							:target "http://abbot.unl.edu/tei-xl.rng"}] 
+			(convert-files opts)))
+	([this inputdir outputdir custom namespace]
+	(let [opts {:inputdir inputdir
+			  			:outputdir outputdir
+							:custom custom
+							:namespace namespace
+							:target "http://abbot.unl.edu/tei-xl.rng"}] 
+			(convert-files opts)))
+	([this inputdir outputdir custom namespace target]
+	(let [opts {:inputdir inputdir
+			  			:outputdir outputdir
+							:custom custom
+							:namespace namespace
+							:target target}] 
 			(convert-files opts))))
