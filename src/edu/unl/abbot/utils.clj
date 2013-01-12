@@ -22,7 +22,7 @@
 	(:import
 		(java.io File)))
 
-(def version "0.6.0")
+(def version "0.7.0")
 
 (def abbot-home (System/getenv "ABBOT_HOME"))
 
