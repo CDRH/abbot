@@ -48,17 +48,17 @@
 	(fn [x] (spit (str output-dir (.getName x)) (apply-master stylesheet x))))
 
 (defn convert-files [{input-dir  :inputdir
-                      output-dir :outputdir
+		      output-dir :outputdir
 											custom 		 :custom
 											namespace  :namespace
-                      single     :single
-                      target		 :target
+		      single     :single
+		      target		 :target
 											}]
   "Apply the conversion stylesheet to the input files."
 	(let [params (hash-map :n namespace :c custom :t target)
 				stylesheet (conversion-stylesheet target params)
 				converter (converter output-dir stylesheet)
-        input (input-files input-dir)]
+	input (input-files input-dir)]
 		(if single
 			(doall (map converter input))
       (doall (pmap converter input)))))
