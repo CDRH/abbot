@@ -18,7 +18,7 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.Abbot
-    (:use edu.unl.abbot.core)
+	(:use edu.unl.abbot.core)
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
   (import
@@ -28,7 +28,7 @@
     :init init
     :state state
     :methods [[convert [String String String] void]
-						  [convert [String String String String] void]
+              [convert [String String String String] void]
               [convert [String String String String String] void]]))
 
 (defn -init []
