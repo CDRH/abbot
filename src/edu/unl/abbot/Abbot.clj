@@ -30,8 +30,7 @@
   	:methods [
 			[convert [String String String] void]
 			[convert [String String String String] void]
-			[convert [String String String String String] void]
-			]))
+			[convert [String String String String String] void]]))
 
 (defn -init []
 	[[] (atom [])])
