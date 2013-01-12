@@ -18,7 +18,7 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.Abbot
-	(:use edu.unl.abbot.core)
+  (:use edu.unl.abbot.core)
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
   (import
@@ -32,28 +32,28 @@
               [convert [String String String String String] void]]))
 
 (defn -init []
-	[[] (atom [])])
+  [[] (atom [])])
 
 (defn -convert
-	"Apply the conversion stylesheet to the input files."
-	([this inputdir outputdir target]
-		(let [opts {:inputdir inputdir
+  "Apply the conversion stylesheet to the input files."
+  ([this inputdir outputdir target]
+    (let [opts {:inputdir inputdir
                 :outputdir outputdir
                 :target target
                 :namespace "http://www.tei-c.org/ns/1.0"
                 :custom "http://abbot.unl.edu/abbot_config.xml"}]
-			(convert-files opts)))
-	([this inputdir outputdir target namespace]
+      (convert-files opts)))
+  ([this inputdir outputdir target namespace]
     (let [opts {:inputdir inputdir
                 :outputdir outputdir
                 :target target
                 :namespace namespace
                 :custom "http://abbot.unl.edu/abbot_config.xml"}]
-			(convert-files opts)))
-	([this inputdir outputdir target namespace custom]
+      (convert-files opts)))
+  ([this inputdir outputdir target namespace custom]
     (let [opts {:inputdir inputdir
                 :outputdir outputdir
                 :target target
                 :namespace namespace
                 :custom custom}]
-			(convert-files opts))))
+      (convert-files opts))))
