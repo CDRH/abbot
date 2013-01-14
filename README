@@ -32,7 +32,7 @@ Everything you need to use Abbot (aside from an up-to-date JVM) is contained in 
 
 2. Put the files you want to convert into `$ABBOT_HOME/input`.
 
-3. type "java -jar abbot-X.X.X-standalone.jar"
+3. type `java -jar abbot-X.X.X-standalone.jar`
 
 4. Behold your converted files in `$ABBOT_HOME/output`
 
