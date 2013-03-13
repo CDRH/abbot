@@ -2,7 +2,7 @@
 Abbot
 =====
 
-Version 0.7.2.
+Version 0.8.0.
 
 A sepulchral voice reverberating through the monastery, says . . .
 
@@ -61,7 +61,7 @@ Abbot is built using a combination of XSLT and [Clojure](http://clojure.org/) us
 	lein deps
 	lein uberjar
 
-to generate the current SNAPSHOT (which will appear in the `$ABBOT_HOME/target` directory).
+to generate the current SNAPSHOT (which will appear in the `$ABBOT_HOME/target` directory as abbot-X.X.X.jar).
 
 The abbot "runtime" is substantially written in Clojure, but that code is mainly concerned with compiling the "metastylesheet" (the stylesheet that generates the stylesheet that does the conversion -- or, as we call it, the "conversion stylesheet").  Once the conversion stylesheet is built (in the first few seconds of a typical run), Abbot will proceed to apply it to all the documents in the input directory.
 
