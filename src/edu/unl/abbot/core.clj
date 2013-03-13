@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Mon Aug 06 17:39:32 CDT 2012
+;;; Last Modified: Wed Mar 13 15:37:27 CDT 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -23,6 +23,7 @@
     (java.io File)) 
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
+  (:use [clojure.tools.logging :only (info error fatal)])
     (:use clojure.java.io)
     (:gen-class))
 
@@ -52,13 +53,21 @@
               custom     :custom
               namespace  :namespace
               single     :single
-              target     :target
-                                            }]
+              target     :target}]
   "Apply the conversion stylesheet to the input files."
+  (if (and (.isDirectory (File. input-dir)) (.isDirectory (File. output-dir)))
     (let [params (hash-map :n namespace :c custom :t target)
                 stylesheet (conversion-stylesheet target params)
                 converter (converter output-dir stylesheet)
     input (input-files input-dir)]
+      (try
+        (info "Starting job")
         (if single
-            (doall (map converter input))
-      (doall (pmap converter input)))))
+          (doall (map converter input)) 
+          (doall (pmap converter input)))
+        (info "Job ended -- shutting down")
+        (catch Exception ex
+          (error ex "There was an error during file processing"))))
+  (do
+    (println "No input/output directories specified (-h for details)")
+    (fatal "No input/output directories specified (-h for details)"))))

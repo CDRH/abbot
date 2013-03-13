@@ -9,7 +9,7 @@
 ;;; for the Center for Digital Research in the Humanities, University
 ;;; of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Thu Jan 03 10:02:39 CST 2013
+;;; Last Modified: Wed Mar 13 17:25:45 CDT 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -25,13 +25,17 @@
 						 FileInputStream))
   (:use edu.unl.abbot.utils)
 	(:use clojure.data.xml)
+  (:use [clojure.tools.logging :only (error)])
 	(:require [saxon :as sax])
 	(:require [clojure.java.io :as io]))
 
 (defn create-meta-stylesheet [params]
-	(let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
-				meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
-		(fn [x] (meta-stylesheet x params))))
+  (try
+	  (let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+          meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
+         (fn [x] (meta-stylesheet x params)))
+    (catch Exception ex
+      (error ex "Unable to create meta-stylesheet"))))
 
 ;; Creates the conversion stylesheet (the XSLT that does the actual
 ;; conversion) from the meta-stylesheet, and returns it as a function.
@@ -41,10 +45,13 @@
 
 (defn conversion-stylesheet [target params]
   "Returns the conversion stylesheet (as a function)"
-  (let [rng-file (sax/compile-xml (urlify target))
-        meta-stylesheet (create-meta-stylesheet params)
-				conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
-    (fn [x] (conversion-xslt x))))
+  (try
+    (let [rng-file (sax/compile-xml (urlify target))
+          meta-stylesheet (create-meta-stylesheet params)
+          conversion-xslt (sax/compile-xslt (meta-stylesheet rng-file))]
+      (fn [x] (conversion-xslt x)))
+    (catch Exception ex
+      (error ex "Unable to create conversion stylesheet"))))
 
 
 (defn apply-master [stylesheet xml-file]
