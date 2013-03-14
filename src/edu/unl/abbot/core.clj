@@ -23,12 +23,12 @@
     (java.io File)) 
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
-  (:use [clojure.tools.logging :only (error fatal)])
+  (:use [clojure.tools.logging :only (info error fatal)])
     (:use clojure.java.io)
     (:gen-class))
 
 (defn input-files [input-dir]
-  "Read input file and do some basic sanity checking."
+  "Read inputs file and do some basic sanity checking."
   ; Apparently, the only truly reliable way to check that a text file
   ; is indeed an XML file is to parse it.  The XML declaration is
   ; optional, and different legal unicode encodings may or may not
@@ -38,9 +38,12 @@
   ; So we check that the file is, in fact, a file, and demand an .xml
   ; extension.  Notification of more insidious file errors will have
   ; to be left to Saxon.
-    (let [filters [#(.isFile %)
-                                 #(has-xml-extension? %)]]
-    (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
+  
+    ;(let [filters [#(.isFile %) #(has-xml-extension? %)]]
+    ;  (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
+    (let [has-xml? [#(.isFile %) #(has-xml-extension? %)]
+          files (file-seq (File. input-dir))]
+      (filter (fn [x] (every? #(% x) has-xml?)) files)))
 
 (defn converter [output-dir stylesheet]
     "Returns a function that runs the conversion and writes out the file"
