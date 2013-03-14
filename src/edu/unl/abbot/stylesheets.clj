@@ -33,7 +33,7 @@
   (try
     (let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
           meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
-         (fn [x] (meta-stylesheet x params)))
+      (fn [x] (meta-stylesheet x params)))
     (catch Exception ex
       (error ex "Unable to create meta-stylesheet"))))
 
