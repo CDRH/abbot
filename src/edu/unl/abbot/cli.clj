@@ -24,7 +24,7 @@
 	(:use edu.unl.abbot.core)
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
-  (:use [clojure.tools.logging :only (info fatal)])
+  (:use [clojure.tools.logging :only (fatal)])
 	(:gen-class))
 
 (require '[clojure.tools.cli :as c])

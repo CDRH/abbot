@@ -23,7 +23,7 @@
     (java.io File)) 
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
-  (:use [clojure.tools.logging :only (info error fatal)])
+  (:use [clojure.tools.logging :only (error fatal)])
     (:use clojure.java.io)
     (:gen-class))
 
