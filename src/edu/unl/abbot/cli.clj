@@ -21,11 +21,11 @@
 (ns edu.unl.abbot.cli
   (:import
     (java.io File)) 
-	(:use edu.unl.abbot.core)
+  (:use edu.unl.abbot.core)
   (:use edu.unl.abbot.stylesheets)
   (:use edu.unl.abbot.utils)
   (:use [clojure.tools.logging :only (fatal)])
-	(:gen-class))
+  (:gen-class))
 
 (require '[clojure.tools.cli :as c])
 
@@ -41,14 +41,14 @@
       ["-t" "--target" "Target schema" :default "http://abbot.unl.edu/tei-xl.rng"]
       ["-o" "--outputdir" "Output directory path" :default (str abbot-home "/output/")]
       ["-V" "--version" "Show version number" :flag true])
-		  options (first opts)
-		  banner  (last opts)]
-		  (cond
-			  (:version options) (do
-				  (println (format "Version %s", version))
-				  (System/exit 0))
-			  (:help options) (do (println banner))
-			  :else
+      options (first opts)
+      banner  (last opts)]
+      (cond
+        (:version options) (do
+          (println (format "Version %s", version))
+          (System/exit 0))
+        (:help options) (do (println banner))
+        :else
           (convert-files options)))
     (do
       (println "Please set ABBOT_HOME to the directory containing the abbot jarfile")
