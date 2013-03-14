@@ -17,7 +17,7 @@ Abbot is a tool for undertaking large-scale conversion of XML document collectio
 
 By default, Abbot converts documents into TEI Analytics -- a TEI subset designed for text analysis applications.
 
-Abbot is designed to be furiously fast (it will automatically parallelize the conversion across n processor cores), and might be the right solution for jobs that don't explicitly involve interoperability, but merely seek to perform XSL transformations on massive document collections quickly.
+Abbot is designed to be furiously fast (it will automatically parallelize the conversion across *n* processor cores), and might be the right solution for jobs that don't explicitly involve interoperability, but merely seek to perform XSL transformations on massive document collections quickly.
 
 Abbot is designed to run on UNIX-like systems, and is being developed on Linux.  Patches that make it play nice on other platforms will be warmly welcomed.
 
@@ -30,20 +30,20 @@ Everything you need to use Abbot (aside from an up-to-date JVM) is contained in 
 
 1. Set the environment variable `ABBOT_HOME` to this directory (the root directory of the Abbot distribution).
 
-2. Put the files you want to convert into `$ABBOT_HOME/input`.
+2. Create a directory called `input` and another called `output` in `$ABBOT_HOME`.  Then put the files you want to convert into `input`.
 
-3. type `java -jar abbot-X.X.X-standalone.jar`
+3. type `java -jar abbot-X.X.X.jar`
 
 4. Behold your converted files in `$ABBOT_HOME/output`
 
-[Note: Passing -h after the jar will show you some command-line switches that allow you to change the input and output directories.]
+[Note: Passing -h after the jar will show you some command-line switches that allow you to change the input and output directories, among other things.]
 
 Slowstart
 ---------
 
 In order to use Abbot effectively, it helps to understand a bit about how it works.
 
-Abbot reads a schema (we'll call it the "target schema") and automatically generates a stylesheet designed to convert a set of XML documents into a form that (ideally) validates against that schema.  In its most basic form, it simply assumes that any element that appears in the document and which is also legal according to the target schema can be passed through unchanged.  So if the target schema describes a proper subset of the elements used by the documents, Abbot can perform the conversion without much effort on your part.
+Abbot reads a schema (we'll call it the "target schema") and automatically generates a stylesheet designed to convert a set of XML documents into a form that (ideally) validates against that schema.  In its most basic form, it simply assumes that any element that appears in the document that is also legal according to the target schema can be passed through unchanged.  So if the target schema describes a proper subset of the elements used by the documents, Abbot can perform the conversion without much effort on your part.
 
 This works well for a surprising number of cases in which interoperability is the goal, but obviously won't work in more complicated cases.  When the mapping from some element in the documents to some element described in the schema is less obvious, you'll need to provide Abbot with a description of how that transformation should be undertaken.
 
@@ -70,6 +70,6 @@ So, if you're interested in tinkering with the XSLT part of things, you want to 
 License, etc.
 -------------
 
-Written and maintained by Brian Pytlik-Zillig and Stephen Ramsay for the [Center for Digital Research in the Humanities](http://cdrh.unl.edu/) at the University of Nebraska-Lincoln.
+Abbot is written and maintained by Brian Pytlik-Zillig and Stephen Ramsay for the [Center for Digital Research in the Humanities](http://cdrh.unl.edu/) at the University of Nebraska-Lincoln.
 
-Copyright © 2011-2013 Board of Regents of the University of Nebraska-Lincoln.  Norman may be freely distributed and/or modified subject to certain conditions.  It is made available in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING for more details.
+Copyright © 2011-2013 Board of Regents of the University of Nebraska-Lincoln.  Abbot may be freely distributed and/or modified subject to certain conditions.  It is made available in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See COPYING for more details.
