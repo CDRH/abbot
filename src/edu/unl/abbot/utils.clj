@@ -19,8 +19,8 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.utils
-	(:import
-		(java.io File)))
+  (:import
+    (java.io File)))
 
 (def version "0.8.0")
 
@@ -29,11 +29,11 @@
 (defn has-xml-extension? [file] 
   "Simple substring check for the presence of a .xml extension on
   the filename."
-	(let [filename (.getName file)]
-		(= ".xml" (.substring filename (.lastIndexOf filename ".")))))
+  (let [filename (.getName file)]
+    (= ".xml" (.substring filename (.lastIndexOf filename ".")))))
 
 (defn urlify [uri]
-	"URL-ify pathnames"
-	(if (.. (File. uri) isFile)
-		(.. (File. uri) toURL)
-		(java.net.URL. uri)))
+  "URL-ify pathnames"
+  (if (.. (File. uri) isFile)
+    (.. (File. uri) toURL)
+    (java.net.URL. uri)))

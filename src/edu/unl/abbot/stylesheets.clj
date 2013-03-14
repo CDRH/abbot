@@ -20,18 +20,18 @@
 ;;; for more details.
 
 (ns edu.unl.abbot.stylesheets
-	(:import
-		(java.io InputStreamReader
-						 FileInputStream))
+  (:import
+    (java.io InputStreamReader
+             FileInputStream))
   (:use edu.unl.abbot.utils)
-	(:use clojure.data.xml)
+  (:use clojure.data.xml)
   (:use [clojure.tools.logging :only (error)])
-	(:require [saxon :as sax])
-	(:require [clojure.java.io :as io]))
+  (:require [saxon :as sax])
+  (:require [clojure.java.io :as io]))
 
 (defn create-meta-stylesheet [params]
   (try
-	  (let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
+    (let [meta-url "http://abbot.unl.edu/metaStylesheetForRNGschemas.xsl"
           meta-stylesheet (sax/compile-xslt (java.net.URL. meta-url))]
          (fn [x] (meta-stylesheet x params)))
     (catch Exception ex
@@ -57,5 +57,5 @@
 (defn apply-master [stylesheet xml-file]
   "Apply master stylesheet to individual XML file."
   (with-open [rdr (io/reader xml-file)]
-		(let [xml (sax/compile-xml rdr)]
-			(stylesheet xml))))
+    (let [xml (sax/compile-xml rdr)]
+      (stylesheet xml))))
