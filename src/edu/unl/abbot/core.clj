@@ -8,7 +8,7 @@
 ;;; for the Center for Digital Research in the Humanities at the
 ;;; University of Nebraska-Lincoln.
 ;;;
-;;; Last Modified: Wed Mar 13 15:37:27 CDT 2013
+;;; Last Modified: Sat Mar 16 21:08:24 CDT 2013
 ;;;
 ;;; Copyright © 2011-2013 Board of Regents of the University of Nebraska-
 ;;; Lincoln (and others).  See COPYING for details.
@@ -27,29 +27,12 @@
     (:use clojure.java.io)
     (:gen-class))
 
-(defn input-files [input-dir]
-  "Read inputs file and do some basic sanity checking."
-  ; Apparently, the only truly reliable way to check that a text file
-  ; is indeed an XML file is to parse it.  The XML declaration is
-  ; optional, and different legal unicode encodings may or may not
-  ; have a byte order mark.  The .xml extension is everywhere used
-  ; in the specification, but nowhere mandated.
-  ;
-  ; So we check that the file is, in fact, a file, and demand an .xml
-  ; extension.  Notification of more insidious file errors will have
-  ; to be left to Saxon.
-  
-    ;(let [filters [#(.isFile %) #(has-xml-extension? %)]]
-    ;  (filter (fn [x] (every? #(% x) filters)) (file-seq (File. input-dir)))))
-    (let [has-xml? [#(.isFile %) #(has-xml-extension? %)]
-          files (file-seq (File. input-dir))]
-      (filter (fn [x] (every? #(% x) has-xml?)) files)))
+(require '[clojure.xml :as xml])
 
-(defn converter [output-dir stylesheet]
-    "Returns a function that runs the conversion and writes out the file"
-    ; Written as a clojure to keep the main convert-files function
-    ; uncluttered.  
-    (fn [x] (spit (str output-dir (.getName x)) (apply-master stylesheet x))))
+(declare converter)
+(declare input-files)
+(declare validate)
+(declare isvalid?)
 
 (defn convert-files [{input-dir  :inputdir
               output-dir :outputdir
@@ -59,10 +42,12 @@
               target     :target}]
   "Apply the conversion stylesheet to the input files."
   (if (and (.isDirectory (File. input-dir)) (.isDirectory (File. output-dir)))
+    ; n, c, and t are stylesheet parameters
     (let [params (hash-map :n namespace :c custom :t target)
                 stylesheet (conversion-stylesheet target params)
                 converter (converter output-dir stylesheet)
     input (input-files input-dir)]
+      (validate input)
       (try
         (info "Starting job")
         (if single
@@ -74,3 +59,36 @@
   (do
     (println "No input/output directories specified (-h for details)")
     (fatal "No input/output directories specified (-h for details)"))))
+
+(defn converter [output-dir stylesheet]
+    "Returns a function that runs the conversion and writes out the file"
+    ; Written as a clojure to keep the main convert-files function
+    ; uncluttered.  
+    (fn [x] (spit (str output-dir (.getName x)) (apply-master stylesheet x))))
+
+(defn input-files [input-dir]
+  "Read inputs file and do some basic sanity checking."
+  ; Apparently, the only truly reliable way to check that a text file
+  ; is indeed an XML file is to parse it.  The XML declaration is
+  ; optional, and different legal unicode encodings may or may not
+  ; have a byte order mark.  The .xml extension is everywhere used
+  ; in the specification, but nowhere mandated.
+  ;
+  ; So we check that the file is, in fact, a file, and demand an .xml
+  ; extension.  Notification of more insidious file errors will have
+  ; to be left to Saxon.
+    (let [has-xml? [#(.isFile %) #(has-xml-extension? %)]
+          files (file-seq (File. input-dir))]
+        (filter (fn [x] (every? #(% x) has-xml?)) files)))
+
+(defn validate [input-files]
+  (pmap isvalid? input-files))
+
+(defn isvalid? [file]
+  (if (xml/parse file)
+    true
+    (if (.isDirectory (File. "quarantine"))
+      (spit file "quarantine" (.getName file))
+      (do
+        (.mkdir (java.io.File. "quarantine"))
+        (spit file "quarantine" (.getName file)))))) 
