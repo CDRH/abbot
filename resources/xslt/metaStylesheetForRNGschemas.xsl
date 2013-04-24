@@ -3,7 +3,8 @@
    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wxsl="http://www.w3.org/1999/XSL/Transform2"
    version="2.0" exclude-result-prefixes="#all" xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:rng="http://relaxng.org/ns/structure/1.0"
-   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+   xmlns:sch="http://purl.oclc.org/dsdl/schematron">
 
    <!-- ###########
     The Abbot meta-stylesheet was written, and is maintained, by Brian L. Pytlik Zillig. 
@@ -192,6 +193,8 @@
    <xsl:output method="xml" indent="yes" encoding="utf-8"/>
 
    <xsl:template match="rng:value"/>
+
+   <xsl:template match="sch:*"/>
 
    <xsl:template match="a:documentation"/>
 
