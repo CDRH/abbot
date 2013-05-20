@@ -1,2 +1,3 @@
 .lein-deps-sum
 .DS_Store
+abbot.log
