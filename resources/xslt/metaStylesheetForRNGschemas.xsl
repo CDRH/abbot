@@ -3,7 +3,8 @@
    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wxsl="http://www.w3.org/1999/XSL/Transform2"
    version="2.0" exclude-result-prefixes="#all" xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:rng="http://relaxng.org/ns/structure/1.0"
-   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+   xmlns:sch="http://purl.oclc.org/dsdl/schematron">
 
    <!-- ###########
     The Abbot meta-stylesheet was written, and is maintained, by Brian L. Pytlik Zillig. 
@@ -33,6 +34,9 @@
 
    <!-- ########## xml namespace of source file(s) ########## -->
    <xsl:param name="n"/>
+
+   <!-- ########## edited version of $n param, tests for null ########## -->
+   <xsl:param name="namespace" select="if (contains(normalize-space($n),'null')) then '' else $n"/>
 
    <xsl:param name="date" select="current-date()"/>
 
@@ -190,6 +194,8 @@
 
    <xsl:template match="rng:value"/>
 
+   <xsl:template match="sch:*"/>
+
    <xsl:template match="a:documentation"/>
 
    <xsl:template match="rng:param[@name='pattern']"/>
@@ -200,15 +206,15 @@
          <xsl:namespace name="xsl">http://www.w3.org/1999/XSL/Transform</xsl:namespace>
          <xsl:namespace name="xs">http://www.w3.org/2001/XMLSchema</xsl:namespace>
 
-         <!-- ######## begin addition of user-supplied xpath-default-namespace, here identified as $n -->
+         <!-- ######## begin addition of user-supplied xpath-default-namespace, here identified as $namespace -->
          <xsl:choose>
-            <xsl:when test="$n != ''">
+            <xsl:when test="$namespace != ''">
                <xsl:attribute name="xpath-default-namespace">
-                  <xsl:value-of select="$n"/>
+                  <xsl:value-of select="$namespace"/>
                </xsl:attribute>
             </xsl:when>
          </xsl:choose>
-         <!-- ######## end addition of user-supplied xpath-default-namespace, here identified as $n -->
+         <!-- ######## end addition of user-supplied xpath-default-namespace, here identified as $namespace -->
 
          <xsl:attribute name="version">2.0</xsl:attribute>
 
@@ -219,7 +225,7 @@
          <wxsl:param name="date"/>
 
          <wxsl:param name="user-supplied-namespace">
-            <xsl:value-of select="$n"/>
+            <xsl:value-of select="$namespace"/>
          </wxsl:param>
 
          <wxsl:param name="user-supplied-xml-model">
@@ -287,6 +293,14 @@
          </wxsl:function>
 
          <xsl:comment>XSLT processor used to create this stylesheet: <xsl:value-of select="system-property('xsl:vendor')"/></xsl:comment>
+
+         <!-- ########### begin test for presence of config file; insert warning if not found ########### -->
+         <!--not needed. The Java I/O will send its own warning!!! <xsl:if test="count(document($c)/*//transformation[@activate='yes']) &gt; 0">
+            <xsl:processing-instruction name="warning">
+               <xsl:text>error="configurations or customizations file not found"</xsl:text>
+            </xsl:processing-instruction>
+         </xsl:if>-->
+         <!-- ########### end test for presence of config file; insert warning if not found ########### -->
 
          <!-- ########### begin implementation of the config file, as specified in $c param ########### -->
          <xsl:for-each select="document($c)/*//transformation[@activate='yes']">
@@ -496,7 +510,7 @@
          <xsl:element name="xsl:variable">
             <xsl:attribute name="name">thisNodeAfterTransformation</xsl:attribute>
 
-            <wxsl:element name="{$attributeName}" namespace="{$n}">
+            <wxsl:element name="{$attributeName}" namespace="{$namespace}">
 
                <!-- begin writing attribute handler -->
                <wxsl:for-each select="./@*">
